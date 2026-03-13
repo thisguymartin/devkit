@@ -2,7 +2,7 @@
 
 > **An opinionated, keyboard-first terminal dev environment. Curated CLI tools, purpose-built layouts, and optional AI agents — all managed from one repo.**
 
-![Terminal Setup](assets/starting_terminal.png)
+
 
 ## What This Is
 
