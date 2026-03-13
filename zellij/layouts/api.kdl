@@ -1,0 +1,57 @@
+// API Development Layout
+// Build APIs: server running, request testing, logs streaming, DB ready.
+// Stacked panes keep multiple log streams without eating screen space.
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/api.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    tab name="Develop" focus=true {
+        pane split_direction="vertical" {
+            // Left: Editor + server
+            pane split_direction="horizontal" size="55%" {
+                pane name="Editor" size="65%" {
+                    focus true
+                }
+                pane name="API Server" size="35%"
+            }
+
+            // Right: Stacked logs + requests
+            pane stacked=true size="45%" {
+                pane expanded=true name="Request Log"
+                pane name="Server Logs"
+                pane name="Error Log"
+            }
+        }
+    }
+
+    tab name="Test" {
+        pane split_direction="vertical" {
+            // Left: API test runner
+            pane name="API Tests" size="50%" {
+                focus true
+            }
+
+            // Right: curl/httpie scratch + response viewer
+            pane split_direction="horizontal" size="50%" {
+                pane name="Request Shell" size="50%"
+                pane name="DB Console" size="50%"
+            }
+        }
+    }
+
+    tab name="Docs & Schema" {
+        pane split_direction="horizontal" {
+            pane name="Schema / OpenAPI" size="50%" {
+                focus true
+            }
+            pane name="Shell" size="50%"
+        }
+    }
+}

@@ -1,0 +1,80 @@
+// Grove Layout — the "everything running" dev environment
+// For when you need the full picture: server, logs, git, tests, files.
+// Named after a grove of trees — many processes growing together.
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/grove.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    // Tab 1: Dev server + logs + git
+    tab name="Develop" focus=true {
+        pane split_direction="vertical" {
+            // Left: Editor / main work area
+            pane split_direction="horizontal" size="55%" {
+                pane name="Editor" size="70%" {
+                    focus true
+                }
+                pane command="lazygit" name="Git" size="30%"
+            }
+
+            // Right: Server + logs stacked
+            pane stacked=true size="45%" {
+                pane expanded=true name="Dev Server"
+                pane name="Logs"
+                pane name="Build Output"
+            }
+        }
+    }
+
+    // Tab 2: Test + lint + type-check
+    tab name="Quality" {
+        pane split_direction="vertical" {
+            pane stacked=true size="50%" {
+                pane expanded=true name="Tests" {
+                    focus true
+                }
+                pane name="Test Watch"
+            }
+
+            pane stacked=true size="50%" {
+                pane expanded=true name="Linter"
+                pane name="Type Check"
+                pane name="Shell"
+            }
+        }
+    }
+
+    // Tab 3: Services and infra
+    tab name="Services" {
+        pane split_direction="vertical" {
+            pane stacked=true size="50%" {
+                pane expanded=true name="Docker / Containers" {
+                    focus true
+                }
+                pane name="DB Console"
+                pane name="Redis"
+            }
+
+            pane split_direction="horizontal" size="50%" {
+                pane command="btop" name="System" size="60%"
+                pane name="Shell" size="40%"
+            }
+        }
+    }
+
+    // Tab 4: Files + search
+    tab name="Explore" {
+        pane split_direction="vertical" {
+            pane command="yazi" name="Files" size="40%" {
+                focus true
+            }
+            pane name="Shell" size="60%"
+        }
+    }
+}

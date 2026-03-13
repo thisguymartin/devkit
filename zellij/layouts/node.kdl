@@ -1,0 +1,119 @@
+// Node.js Project Layout
+// Pre-wired for Node/TypeScript projects: dev server, tests, lint, DB, Docker.
+// Commands start suspended — press ENTER in each pane to run.
+// Set CWD before launching: cd ~/your-project && znode
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/node.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    // Tab 1: Dev server + git + logs
+    tab name="Develop" focus=true {
+        pane split_direction="vertical" {
+            // Left: Editor space
+            pane name="Editor" size="55%" {
+                focus true
+            }
+
+            // Right: Server + git stacked
+            pane split_direction="horizontal" size="45%" {
+                pane command="pnpm" name="Dev Server" size="55%" {
+                    args "dev"
+                    start_suspended true
+                }
+                pane command="lazygit" name="Git" size="45%"
+            }
+        }
+    }
+
+    // Tab 2: Tests + lint + format
+    tab name="Quality" {
+        pane split_direction="vertical" {
+            // Left: Test runners stacked
+            pane stacked=true size="55%" {
+                pane command="pnpm" expanded=true name="Unit Tests" {
+                    args "test"
+                    start_suspended true
+                    focus true
+                }
+                pane command="pnpm" name="E2E Tests" {
+                    args "e2e-test"
+                    start_suspended true
+                }
+            }
+
+            // Right: Lint + format stacked
+            pane stacked=true size="45%" {
+                pane command="pnpm" expanded=true name="Lint" {
+                    args "lint"
+                    start_suspended true
+                }
+                pane command="pnpm" name="Format Check" {
+                    args "check"
+                    start_suspended true
+                }
+                pane name="Shell"
+            }
+        }
+    }
+
+    // Tab 3: Database — migrations, studio, seed
+    tab name="Database" {
+        pane split_direction="vertical" {
+            // Left: DB operations stacked
+            pane stacked=true size="50%" {
+                pane command="pnpm" expanded=true name="Migrate" {
+                    args "db-migrate"
+                    start_suspended true
+                    focus true
+                }
+                pane command="pnpm" name="Generate" {
+                    args "db-generate"
+                    start_suspended true
+                }
+                pane command="pnpm" name="DB Status" {
+                    args "db-status"
+                    start_suspended true
+                }
+                pane command="pnpm" name="Seed" {
+                    args "db-seed"
+                    start_suspended true
+                }
+            }
+
+            // Right: Studio + shell
+            pane split_direction="horizontal" size="50%" {
+                pane command="pnpm" name="Drizzle Studio" size="55%" {
+                    args "db-studio"
+                    start_suspended true
+                }
+                pane name="DB Shell" size="45%"
+            }
+        }
+    }
+
+    // Tab 4: Docker + system
+    tab name="Infra" {
+        pane split_direction="vertical" {
+            pane split_direction="horizontal" size="50%" {
+                pane command="docker" name="Containers" size="55%" {
+                    args "compose" "up"
+                    start_suspended true
+                    focus true
+                }
+                pane name="Docker Shell" size="45%"
+            }
+
+            pane split_direction="horizontal" size="50%" {
+                pane command="btop" name="System" size="55%"
+                pane name="Shell" size="45%"
+            }
+        }
+    }
+}

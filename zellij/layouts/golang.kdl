@@ -1,0 +1,110 @@
+// Go Project Layout
+// Pre-wired for Go projects: run, test, lint, build, Docker.
+// Commands start suspended — press ENTER in each pane to run.
+// Set CWD before launching: cd ~/your-project && zgo
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/golang.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    // Tab 1: Run + git
+    tab name="Develop" focus=true {
+        pane split_direction="vertical" {
+            pane name="Editor" size="55%" {
+                focus true
+            }
+
+            pane split_direction="horizontal" size="45%" {
+                pane command="go" name="Run" size="55%" {
+                    args "run" "."
+                    start_suspended true
+                }
+                pane command="lazygit" name="Git" size="45%"
+            }
+        }
+    }
+
+    // Tab 2: Test + vet + lint
+    tab name="Quality" {
+        pane split_direction="vertical" {
+            pane stacked=true size="55%" {
+                pane command="go" expanded=true name="Tests" {
+                    args "test" "-v" "./..."
+                    start_suspended true
+                    focus true
+                }
+                pane command="go" name="Test Race" {
+                    args "test" "-race" "./..."
+                    start_suspended true
+                }
+                pane command="go" name="Benchmarks" {
+                    args "test" "-bench=." "./..."
+                    start_suspended true
+                }
+            }
+
+            pane stacked=true size="45%" {
+                pane command="go" expanded=true name="Vet" {
+                    args "vet" "./..."
+                    start_suspended true
+                }
+                pane command="go" name="Build" {
+                    args "build" "-o" "/dev/null" "./..."
+                    start_suspended true
+                }
+                pane name="Shell"
+            }
+        }
+    }
+
+    // Tab 3: Modules + profiling
+    tab name="Modules" {
+        pane split_direction="vertical" {
+            pane stacked=true size="50%" {
+                pane command="go" expanded=true name="Mod Tidy" {
+                    args "mod" "tidy"
+                    start_suspended true
+                    focus true
+                }
+                pane command="go" name="Mod Graph" {
+                    args "mod" "graph"
+                    start_suspended true
+                }
+                pane command="go" name="Mod Verify" {
+                    args "mod" "verify"
+                    start_suspended true
+                }
+            }
+
+            pane split_direction="horizontal" size="50%" {
+                pane name="Profiling / pprof" size="55%"
+                pane name="Shell" size="45%"
+            }
+        }
+    }
+
+    // Tab 4: Docker + system
+    tab name="Infra" {
+        pane split_direction="vertical" {
+            pane split_direction="horizontal" size="50%" {
+                pane command="docker" name="Containers" size="55%" {
+                    args "compose" "up"
+                    start_suspended true
+                    focus true
+                }
+                pane name="Docker Shell" size="45%"
+            }
+
+            pane split_direction="horizontal" size="50%" {
+                pane command="btop" name="System" size="55%"
+                pane name="Shell" size="45%"
+            }
+        }
+    }
+}

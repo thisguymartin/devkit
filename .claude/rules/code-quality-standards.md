@@ -1,0 +1,41 @@
+---
+description: Enforces SRP, complexity limits, performance patterns, and readability. Use when writing or reviewing code, refactoring, or when the user asks about code quality or standards.
+globs: "**/*.{ts,tsx,js,jsx,py,go,cs,rs,java}"
+---
+
+# Code Quality Standards
+
+## Single Responsibility Principle (SRP)
+- Functions and classes do only ONE thing
+- Functions should be 20-30 lines max
+- Avoid function names containing "And" (e.g., `validateAndSave`) - split them
+- Classes should not mix unrelated responsibilities
+
+## Cyclomatic Complexity & Nesting
+- **Hard limit:** No nesting deeper than 3 levels
+- Use guard clauses (early returns) to flatten `if/else` structures
+- Functions with >5 branch paths need refactoring
+
+## Performance Patterns
+
+### Algorithmic Complexity
+- Avoid nested loops O(n^2) when Hash Map O(n) works
+- Use Sets for containment checks, not Lists/Arrays
+
+### I/O in Loops (N+1 Problem)
+- **Never** put DB queries, API calls, or File I/O inside loops
+- Batch fetch before the loop, then iterate over results
+
+### Redundancy
+- Move invariant calculations outside loops
+- Avoid repeated object instantiation in loops
+
+### Memory
+- Use StringBuilder/join for string concatenation in loops
+- Use specific field selection instead of `SELECT *`
+
+## Readability
+- Variable names must be descriptive (no `x`, `data`, `tmp`, `ret`)
+- No magic numbers - extract to named constants
+- Consistent naming conventions throughout the codebase
+- Clear function signatures with meaningful parameter names

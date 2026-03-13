@@ -1,0 +1,30 @@
+---
+description: Checks for injection, deserialization, path traversal, auth, and secrets in application code.
+globs: "**/*.{ts,tsx,js,jsx,py,go,cs,rs}"
+---
+
+# Security Awareness
+
+## Never
+- Use `eval()`, `exec()`, `Function()`, `compile()` with user input
+- Concatenate strings into SQL queries - use parameterized queries
+- Pass user input to `os.system()`, `subprocess`, or `exec.Command` unsanitized
+- Use `innerHTML` or `dangerouslySetInnerHTML` with unsanitized data
+- Use `pickle.loads()` on untrusted data or `yaml.load()` without `SafeLoader`
+- Hardcode API keys, passwords, or tokens
+- Commit `.env` files
+- Log passwords or tokens in plaintext
+
+## Always
+- Sanitize file paths from user input
+- Add auth middleware to endpoints
+- Check resource ownership (prevent IDOR)
+- Validate JWT expiration and signature
+- Validate at system boundaries (user input, external APIs)
+- Rate limit public-facing endpoints
+
+## Language-Specific
+- **TypeScript/JS**: XSS, prototype pollution, ReDoS
+- **Python**: SQL injection via f-strings, SSRF, command injection with `shell=True`
+- **Go**: SQL string concatenation, race conditions, ignored `err` in auth/crypto
+- **C#/.NET**: `Html.Raw()` XSS, XXE, `FromSqlRaw` injection

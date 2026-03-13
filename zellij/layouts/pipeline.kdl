@@ -1,0 +1,60 @@
+// Pipeline Layout — CI/CD and deploy workflows
+// Watch builds, tail deploy logs, monitor health checks.
+// Great for deploy days or debugging CI failures locally.
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/pipeline.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    tab name="Build" focus=true {
+        pane split_direction="horizontal" {
+            // Top: Build output
+            pane name="Build / CI" size="60%" {
+                focus true
+            }
+
+            // Bottom: Lint + type-check side by side
+            pane split_direction="vertical" size="40%" {
+                pane name="Lint" size="50%"
+                pane name="Type Check" size="50%"
+            }
+        }
+    }
+
+    tab name="Deploy" {
+        pane split_direction="vertical" {
+            // Left: Deploy commands
+            pane split_direction="horizontal" size="50%" {
+                pane name="Deploy Runner" size="60%" {
+                    focus true
+                }
+                pane name="Rollback Shell" size="40%"
+            }
+
+            // Right: Stacked log tails
+            pane stacked=true size="50%" {
+                pane expanded=true name="Deploy Logs"
+                pane name="Health Check"
+                pane name="Metrics"
+            }
+        }
+    }
+
+    tab name="Containers" {
+        pane split_direction="horizontal" {
+            pane name="Docker Compose" size="50%" {
+                focus true
+            }
+            pane split_direction="vertical" size="50%" {
+                pane name="Container Logs" size="50%"
+                pane name="Shell" size="50%"
+            }
+        }
+    }
+}

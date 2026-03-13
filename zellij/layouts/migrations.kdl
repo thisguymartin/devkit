@@ -1,0 +1,58 @@
+// Migrations & Queries Layout
+// Database work: run migrations, test queries, watch logs.
+// Stacked DB panes let you keep multiple connections open.
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/migrations.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    tab name="Migrations" focus=true {
+        pane split_direction="vertical" {
+            // Left: Migration runner + schema
+            pane split_direction="horizontal" size="50%" {
+                pane name="Migration Runner" size="60%" {
+                    focus true
+                }
+                pane name="Schema / Diff" size="40%"
+            }
+
+            // Right: DB console + logs stacked
+            pane stacked=true size="50%" {
+                pane expanded=true name="DB Console"
+                pane name="Migration Logs"
+                pane name="Shell"
+            }
+        }
+    }
+
+    tab name="Queries" {
+        pane split_direction="vertical" {
+            // Left: Query editor (write SQL / ORM commands)
+            pane name="Query Editor" size="50%" {
+                focus true
+            }
+
+            // Right: Stacked DB connections
+            pane stacked=true size="50%" {
+                pane expanded=true name="PostgreSQL"
+                pane name="Redis"
+                pane name="Results / Export"
+            }
+        }
+    }
+
+    tab name="Seed & Fixtures" {
+        pane split_direction="horizontal" {
+            pane name="Seed Runner" size="50%" {
+                focus true
+            }
+            pane name="DB Console" size="50%"
+        }
+    }
+}

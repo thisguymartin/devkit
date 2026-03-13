@@ -1,0 +1,168 @@
+# Starship Prompt Configuration
+# Catppuccin Mocha theme for AI-native dev environment
+# Link: ln -sf ~/ai-native-dev/.config/starship/starship.toml ~/.config/starship.toml
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$python\
+$golang\
+$rust\
+$dotnet\
+$docker_context\
+$cmd_duration\
+$line_break\
+$character"""
+
+# Disable the blank line at the start
+add_newline = true
+
+# --- Directory ---
+[directory]
+style = "bold #89b4fa"          # Catppuccin Blue
+truncation_length = 3
+truncate_to_repo = true
+format = "[$path]($style)[$read_only]($read_only_style) "
+read_only = " "
+read_only_style = "#f38ba8"     # Catppuccin Red
+
+# --- Git Branch ---
+[git_branch]
+style = "#a6e3a1"               # Catppuccin Green
+format = "[$symbol$branch(:$remote_branch)]($style) "
+symbol = " "
+
+# --- Git Status ---
+[git_status]
+style = "#f9e2af"               # Catppuccin Yellow
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count}"
+stashed = "*${count}"
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "✘${count}"
+
+# --- Character (prompt symbol) ---
+[character]
+success_symbol = "[❯](bold #a6e3a1)"   # Green on success
+error_symbol = "[❯](bold #f38ba8)"     # Red on error
+
+# --- Command Duration ---
+[cmd_duration]
+min_time = 2_000                # Show if command takes >2s
+style = "#6c7086"               # Catppuccin Overlay0 (subtle)
+format = "[$duration]($style) "
+
+# --- Node.js ---
+[nodejs]
+style = "#a6e3a1"               # Catppuccin Green
+format = "[$symbol($version)]($style) "
+symbol = " "
+detect_files = ["package.json", ".node-version", ".nvmrc"]
+detect_extensions = ["js", "mjs", "cjs", "ts", "tsx"]
+
+# --- Python ---
+[python]
+style = "#f9e2af"               # Catppuccin Yellow
+format = '[$symbol${pyenv_prefix}(${version})(\($virtualenv\))]($style) '
+symbol = " "
+detect_extensions = ["py"]
+detect_files = ["requirements.txt", "pyproject.toml", "setup.py", ".python-version"]
+
+# --- Go ---
+[golang]
+style = "#89dceb"               # Catppuccin Sky
+format = "[$symbol($version)]($style) "
+symbol = " "
+detect_files = ["go.mod", "go.sum"]
+
+# --- Rust ---
+[rust]
+style = "#fab387"               # Catppuccin Peach
+format = "[$symbol($version)]($style) "
+symbol = " "
+
+# --- .NET ---
+[dotnet]
+style = "#cba6f7"               # Catppuccin Mauve
+format = "[$symbol($version)(🎯 $tfm)]($style) "
+symbol = " "
+
+# --- Docker ---
+[docker_context]
+style = "#89b4fa"               # Catppuccin Blue
+format = "[$symbol$context]($style) "
+symbol = " "
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
+
+# --- Disabled modules (keep prompt fast) ---
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[azure]
+disabled = true
+
+[kubernetes]
+disabled = true
+
+[package]
+disabled = true
+
+[php]
+disabled = true
+
+[ruby]
+disabled = true
+
+[java]
+disabled = true
+
+[swift]
+disabled = true
+
+[kotlin]
+disabled = true
+
+[lua]
+disabled = true
+
+[perl]
+disabled = true
+
+[scala]
+disabled = true
+
+[terraform]
+disabled = true
+
+[vagrant]
+disabled = true
+
+[nix_shell]
+disabled = true
+
+[memory_usage]
+disabled = true
+
+[battery]
+disabled = true
+
+[time]
+disabled = true
+
+[username]
+disabled = true
+
+[hostname]
+disabled = true

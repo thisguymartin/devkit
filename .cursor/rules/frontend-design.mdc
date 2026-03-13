@@ -1,0 +1,43 @@
+---
+description: Create distinctive, production-grade frontend interfaces with high design quality. Use when building web components, pages, or applications. Avoids generic AI aesthetics.
+globs: "**/*.{html,css,scss,tsx,jsx,vue,svelte}"
+---
+
+# Frontend Design (Impeccable)
+
+Create distinctive, production-grade frontend interfaces that avoid generic "AI slop" aesthetics.
+
+## Design Direction
+Commit to a BOLD aesthetic direction with clear purpose, tone, and differentiation.
+
+## Typography
+- Choose distinctive fonts. **DON'T**: Inter, Roboto, Arial, Open Sans
+- Better: Instrument Sans, Plus Jakarta Sans, Outfit, Onest, Figtree, Fraunces
+- Use modular type scale with fluid sizing (clamp)
+
+## Color & Theme
+- Use OKLCH for perceptually uniform palettes
+- Tint neutrals toward brand hue
+- **DON'T**: gray text on colored backgrounds, pure black (#000), AI color palette (cyan-on-dark, purple gradients)
+
+## Layout & Space
+- Create visual rhythm through varied spacing
+- **DON'T**: wrap everything in cards, nest cards, identical card grids, center everything
+
+## Motion
+- Use exponential easing (ease-out-quart/quint/expo)
+- Only animate transform and opacity
+- **DON'T**: bounce or elastic easing
+
+## Anti-Patterns (AI Slop)
+- No glassmorphism everywhere
+- No rounded rectangles with generic shadows
+- No hero metric layout templates
+- No sparklines as decoration
+- No modals unless truly necessary
+
+## The Test
+If someone says "AI made this" immediately — redesign it.
+
+*See skills/frontend-design/ for full reference files.*
+*License: Apache 2.0. Based on Anthropic's frontend-design skill.*

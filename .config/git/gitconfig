@@ -1,0 +1,86 @@
+# Git Configuration Template
+# Link: git config --global include.path ~/ai-native-dev/.config/git/gitconfig
+#
+# This file includes delta.gitconfig automatically.
+# Do NOT put your name/email here — keep those in ~/.gitconfig directly.
+
+# --- Include delta config ---
+[include]
+    path = ~/ai-native-dev/.config/git/delta.gitconfig
+
+# --- Defaults ---
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[push]
+    autoSetupRemote = true
+    default = current
+
+[fetch]
+    prune = true
+    prunetags = true
+
+[rebase]
+    autoStash = true
+    autoSquash = true
+
+[rerere]
+    enabled = true
+
+# --- Aliases ---
+[alias]
+    # Shortcuts
+    co = checkout
+    cb = checkout -b
+    sw = switch
+    sc = switch -c
+    br = branch
+    ci = commit
+    st = status -sb
+    df = diff
+    ds = diff --staged
+    unstage = reset HEAD --
+    undo = reset --soft HEAD~1
+    amend = commit --amend --no-edit
+    wip = !git add -A && git commit -m 'wip'
+
+    # Log
+    lg = log --oneline --graph --decorate -20
+    lga = log --oneline --graph --decorate --all -30
+    ll = log --pretty=format:'%C(yellow)%h%Creset %C(blue)%ad%Creset %C(green)%an%Creset %s%C(red)%d%Creset' --date=short -20
+    today = log --since=midnight --oneline --no-merges
+    week = log --since='1 week ago' --oneline --no-merges
+
+    # Branch management
+    branches = branch -a --sort=-committerdate --format='%(color:yellow)%(refname:short)%(color:reset) %(color:blue)%(committerdate:relative)%(color:reset) %(color:green)%(authorname)%(color:reset)'
+    gone = !git branch -vv | grep ': gone]' | awk '{print $1}'
+    prune-gone = !git gone | xargs -r git branch -D
+    default-branch = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+
+    # Stash
+    sl = stash list
+    sp = stash pop
+    ss = stash push -m
+
+    # Info
+    whoami = !echo "$(git config user.name) <$(git config user.email)>"
+    root = rev-parse --show-toplevel
+    last = log -1 --stat
+    contributors = shortlog -sn --no-merges
+
+# --- URL shortcuts ---
+[url "git@github.com:"]
+    insteadOf = gh:
+
+# --- Commit signing (uncomment and configure) ---
+# [user]
+#     signingkey = ~/.ssh/id_ed25519.pub
+# [gpg]
+#     format = ssh
+# [commit]
+#     gpgsign = true
+# [tag]
+#     gpgsign = true

@@ -1,0 +1,70 @@
+// Debug Layout — systematic troubleshooting workspace
+// Logs, process inspection, network, and a scratch shell.
+// Floating pane for quick notes while you hunt bugs.
+//
+// Usage: zellij --layout ~/devkit/zellij/layouts/debug.kdl
+
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    tab name="Investigate" focus=true {
+        pane split_direction="vertical" {
+            // Left: Stacked log views
+            pane stacked=true size="55%" {
+                pane expanded=true name="App Logs" {
+                    focus true
+                }
+                pane name="System Logs"
+                pane name="Error Trace"
+            }
+
+            // Right: Process + network
+            pane split_direction="horizontal" size="45%" {
+                pane command="btop" name="Processes" size="55%"
+                pane name="Shell" size="45%"
+            }
+        }
+
+        // Floating notepad for jotting findings
+        floating_panes {
+            pane name="Notes" {
+                x "60%"
+                y "5%"
+                width "35%"
+                height "30%"
+            }
+        }
+    }
+
+    tab name="Reproduce" {
+        pane split_direction="horizontal" {
+            // Top: The thing you're debugging
+            pane name="Reproduction" size="60%" {
+                focus true
+            }
+
+            // Bottom: Side-by-side comparison shells
+            pane split_direction="vertical" size="40%" {
+                pane name="Before" size="50%"
+                pane name="After" size="50%"
+            }
+        }
+    }
+
+    tab name="Fix" {
+        pane split_direction="vertical" {
+            pane name="Editor" size="50%" {
+                focus true
+            }
+            pane split_direction="horizontal" size="50%" {
+                pane command="lazygit" name="Git" size="50%"
+                pane name="Test" size="50%"
+            }
+        }
+    }
+}

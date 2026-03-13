@@ -1,0 +1,28 @@
+---
+description: Guides discovery, implementation, verification, and finalization phases. Use when starting a feature, fixing a bug, or when the user asks for development process.
+globs: "**/*"
+---
+
+# Development Workflow
+
+## Pre-Flight
+Verify: 1) Objective clear, 2) Constraints identified, 3) System boundaries defined, 4) Assumptions listed, 5) Failure mode considered. If unclear, ask.
+
+## Phase 1: Discovery & Planning
+- Explore existing project structure first
+- Plan: files to modify, strategy, verification plan
+
+## Phase 2: Implementation
+1. Write code
+2. Create and run tests - do not proceed until tests pass
+
+## Phase 3: Code Review
+1. Review for SRP, performance, security
+2. Apply changes immediately
+3. Max 3 iterations. If blocked: "**BLOCKED:** [Reason]"
+
+## Phase 4: Finalize
+1. Present files and proposed commit message
+2. Wait for explicit approval
+3. Commit with conventional format
+4. Push only if explicitly requested

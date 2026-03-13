@@ -1,0 +1,30 @@
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+        }
+    }
+
+    tab name="Monitor" {
+        pane split_direction="vertical" {
+            pane command="btop" name="System Monitor" size="50%"
+
+            pane split_direction="horizontal" size="50%" {
+                pane name="Logs" size="50%" {
+                    focus true
+                }
+                pane name="Shell" size="50%"
+            }
+        }
+    }
+
+    tab name="Docker" {
+        pane split_direction="vertical" {
+            pane name="Containers" size="50%" {
+                focus true
+            }
+            pane name="Shell" size="50%"
+        }
+    }
+}

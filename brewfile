@@ -1,0 +1,37 @@
+# Core Tools
+brew "starship"  # The prompt
+brew "yazi"      # File manager
+brew "lazygit"   # Git TUI (optional, falls back to shell)
+brew "zellij"    # Terminal multiplexer (required)
+brew "gemini-cli" # Gemini CLI (optional, Google AI agent)
+brew "git"       # Git (you probably already have this)
+brew "btop"      # System monitor
+brew "bat"       # Better 'cat'
+brew "ripgrep"   # Fast search
+brew "eza"       # Modern ls (used by aliases)
+brew "fd"        # Modern find (respects .gitignore, integrates with fzf)
+brew "fzf"       # Fuzzy finder
+brew "zoxide"    # Smart cd (learns frequent dirs)
+brew "git-delta" # Syntax-highlighted git diffs
+brew "jq"        # JSON processor
+brew "tldr"      # Simplified man pages
+brew "dust"      # Visual disk usage
+brew "anomalyco/tap/opencode" ## AI Coding Agent
+brew "promptfoo"  # LLM testing, evaluation & red-teaming
+
+# Development Tools
+brew "uv"        # Python package installer & version manager
+brew "nvm"       # Node version manager
+brew "golang"    # Go programming language
+brew "dotnet"    # .NET SDK
+brew "docker"    # Container platform
+brew "gh"        # GitHub CLI (for Copilot and GitHub integration)
+
+# Applications (Casks)
+cask "ghostty"
+cask "claude-code"
+cask "orbstack"  # Docker & Linux container platform
+cask "brave-browser" # Privacy-focused browser
+cask "visual-studio-code" # Code editor
+cask "postico"   # PostgreSQL client
+cask "yaak"      # API client
