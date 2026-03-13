@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A personal AI-native terminal development environment (devkit). Not a software project with build/test/lint cycles -- it's a collection of dotfiles, Zellij layouts, shell scripts, AI agent configs, and AI assistant skills/rules. All tools are installed via Homebrew and orchestrated through Zellij terminal multiplexer.
+A portable, reproducible terminal development environment (devkit). Not a software project with build/test/lint cycles -- it's a collection of dotfiles, Zellij layouts, shell scripts, Homebrew package manifests, tool configs, and optionally AI agent/assistant configs. The goal is to replicate the same workflow on any machine: clone, install, symlink, and go. All tools are installed via Homebrew and orchestrated through Zellij terminal multiplexer.
 
 ## Repository Structure
 
@@ -63,8 +63,11 @@ Configs are symlinked from this repo to `~/.config/` and `~/`. The setup script 
 - `.config/git/delta.gitconfig` -> included via `git config --global include.path`
 - `.config/shell/enhancements.zsh` -> sourced from `.zshrc`
 
-## AI Agent Architecture
+## AI Tools (Optional)
 
+AI agent and assistant configs are included but optional -- the core workflow (tools, layouts, shell configs) works without them.
+
+### OpenCode Agents
 OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax inside OpenCode:
 - `@agent-advisor` -- routes tasks to appropriate agents
 - `@planning-agent` -- system design and architecture
@@ -74,8 +77,7 @@ OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax 
 - `@security` -- vulnerability scanning
 - `@linear` -- Linear project management integration
 
-## Skills System
-
+### Skills System
 Skills in `skills/` are teaching-oriented (Socratic method). Key skills:
 - `refactor-challenge` and `trace-debug` guide the developer rather than fixing directly
 - `explain-code` and `why-this-way` analyze without modifying

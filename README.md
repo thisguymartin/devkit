@@ -1,14 +1,14 @@
 # devkit
 
-> **An opinionated, keyboard-first terminal dev environment. Curated CLI tools, purpose-built layouts, and optional AI agents — all managed from one repo.**
+> **A portable, reproducible terminal dev environment. Clone it, `brew bundle`, and your entire workflow — tools, layouts, configs, shell enhancements — is ready on any Mac.**
 
 
 
 ## What This Is
 
-A portable development environment built entirely around the terminal. One `brew bundle` installs everything. One repo holds all the configs, layouts, and shell enhancements. Clone it on a fresh Mac and you're productive in minutes.
+A single repo that carries your complete development workflow from machine to machine. Every package, shell config, terminal layout, and tool preference lives here. Clone it on a fresh Mac, run the setup, and you're productive in minutes — identical environment everywhere.
 
-It ships with 9 Zellij layouts for different workflows (testing, migrations, API work, debugging, CI/CD), modern replacements for standard Unix tools, and optionally integrates AI coding agents if that's your thing. For AI-powered worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
+It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for different workflows (testing, migrations, API work, debugging, CI/CD), modern replacements for standard Unix tools, shell enhancements, and optionally AI coding agents and assistant configs. For AI-powered worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
 
 ## Core Stack
 
@@ -69,9 +69,9 @@ It ships with 9 Zellij layouts for different workflows (testing, migrations, API
 | `znode` | Node.js | Dev server, vitest, lint, Drizzle migrations/studio, Docker |
 | `zgo` | Go | go run, go test, vet, benchmarks, modules, Docker |
 
-## AI Agents (Optional)
+## AI Tools (Optional)
 
-If you use AI coding tools, the repo includes agent configs for [OpenCode](https://github.com/anomalyco/opencode). These are optional — everything else works without them.
+The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules/skills are included for Claude Code, Cursor, and GitHub Copilot.
 
 | Agent | Specialty | Invoke With |
 | :--- | :--- | :--- |
@@ -84,11 +84,11 @@ If you use AI coding tools, the repo includes agent configs for [OpenCode](https
 | **Security** | Vulnerability scanning | `@security` |
 | **PM** | Linear integration & project mgmt | `@linear` |
 
-Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/)
+Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Assistant rules live in [`.claude/rules/`](.claude/rules/), [`.cursor/rules/`](.cursor/rules/), and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
 
-## Open-Source Projects of Interest
+## Open-Source Tools of Interest
 
-Tools from the community worth checking out:
+Tools and projects from the community that complement this workflow:
 
 | Project | What It Does |
 | :--- | :--- |
