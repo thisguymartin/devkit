@@ -48,12 +48,10 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # --- Zellij layout aliases ---
-alias zfull='zellij --layout ~/devkit/zellij/layouts/fulldev.kdl'
 alias zmon='zellij --layout ~/devkit/zellij/layouts/monitor.kdl'
 alias zdb='zellij --layout ~/devkit/zellij/layouts/database.kdl'
 alias ztest='zellij --layout ~/devkit/zellij/layouts/testrunner.kdl'
 alias zmig='zellij --layout ~/devkit/zellij/layouts/migrations.kdl'
-alias zgrove='zellij --layout ~/devkit/zellij/layouts/grove.kdl'
 alias zpipe='zellij --layout ~/devkit/zellij/layouts/pipeline.kdl'
 alias zapi='zellij --layout ~/devkit/zellij/layouts/api.kdl'
 alias zdebug='zellij --layout ~/devkit/zellij/layouts/debug.kdl'

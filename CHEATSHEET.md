@@ -3,7 +3,6 @@
 ## 🟢 Daily Workflow
 | Command | Description |
 | :--- | :--- |
-| **`zdev`** | **Launch God Mode** (Opens AI + Git + Workbench layout) |
 | `lg` | Open LazyGit manually |
 | `ai` | Run OpenCode agent manually |
 | `cat <file>` | Uses `bat` to read file with syntax highlighting |
@@ -108,9 +107,6 @@
 ## 🗂 Zellij Layouts
 | Command | Layout |
 | :--- | :--- |
-| `zdev` | God Mode (AI + Git + Workbench) |
-| `zfull` | Full Dev (Editor + LazyGit + Terminal) |
-| `zgrove` | Grove — full-stack: server, logs, tests, git, files (4 tabs) |
 | `ztest` | Test Runner — stacked unit/integration/E2E + watch mode |
 | `zmig` | Migrations — runner, DB console, queries, seed data |
 | `zapi` | API Dev — server + request logs + test + schema |

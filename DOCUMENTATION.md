@@ -160,15 +160,12 @@ Shell enhancements (source in .zshrc). Includes:
 - Catppuccin Mocha colors for fzf
 - eza aliases (ls, ll, la, tree)
 - Quick navigation (.., ..., ....)
-- Zellij layout aliases (zfull, zgrove, ztest, zmig, zapi, zpipe, zdebug, zmon, zdb)
+- Zellij layout aliases (ztest, zmig, zapi, zpipe, zdebug, zmon, zdb)
 
 ### `zellij/` directory
 Zellij window manager configuration and layouts:
-- `layouts/lazyai.kdl` - God Mode layout (AI + Git + Workbench)
-- `layouts/fulldev.kdl` - Full Dev layout (Editor + LazyGit + Terminal)
 - `layouts/monitor.kdl` - Monitor layout (btop + logs + Docker)
 - `layouts/database.kdl` - Database layout (PostgreSQL + Redis)
-- `layouts/mochi-worktrees.kdl` - Mochi worktree workspace
 - `config.kdl` - Zellij keybindings and settings
 
 ### `.zshrc` (if present)
@@ -197,8 +194,8 @@ source ~/.zshrc
 # Start services
 start-services.sh
 
-# Launch development environment
-zdev
+# Launch a layout
+ztest
 
 # Check service status
 brew services list
@@ -214,13 +211,9 @@ brew services list
 # Start all services
 start-services.sh
 
-# Launch Zellij with 3 panes
-zdev
-
-# In Zellij:
-# Left: AI agent workspace
-# Right: LazyGit for version control
-# Bottom: Shell for any command
+# Launch a Zellij layout
+ztest   # Test runner
+zapi    # API dev workspace
 ```
 
 ### Checking Database Status
@@ -318,17 +311,13 @@ PROJECT/
 └── zellij/
     ├── config.kdl               ← Zellij config
     └── layouts/
-        ├── lazyai.kdl           ← God Mode layout
-        ├── fulldev.kdl          ← Full Dev layout
-        ├── grove.kdl            ← Full-stack dev (4 tabs)
         ├── testrunner.kdl       ← Test runner + watch
         ├── migrations.kdl       ← DB migrations + queries
         ├── api.kdl              ← API development
         ├── pipeline.kdl         ← CI/CD + deploy
         ├── debug.kdl            ← Debug + floating notes
         ├── monitor.kdl          ← System monitor
-        ├── database.kdl         ← Database consoles
-        └── mochi-worktrees.kdl  ← Mochi worktree layout
+        └── database.kdl         ← Database consoles
 ```
 
 ---

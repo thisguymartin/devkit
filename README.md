@@ -8,7 +8,7 @@
 
 A portable development environment built entirely around the terminal. One `brew bundle` installs everything. One repo holds all the configs, layouts, and shell enhancements. Clone it on a fresh Mac and you're productive in minutes.
 
-It ships with 12 Zellij layouts for different workflows (full-stack dev, testing, migrations, API work, debugging, CI/CD), modern replacements for standard Unix tools, and optionally integrates AI coding agents if that's your thing.
+It ships with 9 Zellij layouts for different workflows (testing, migrations, API work, debugging, CI/CD), modern replacements for standard Unix tools, and optionally integrates AI coding agents if that's your thing. For AI-powered worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
 
 ## Core Stack
 
@@ -38,15 +38,12 @@ It ships with 12 Zellij layouts for different workflows (full-stack dev, testing
 
 ## Zellij Layouts
 
-12 purpose-built layouts using stacked panes, multi-tab workflows, and floating panes.
+9 purpose-built layouts using stacked panes, multi-tab workflows, and floating panes. For AI agent + worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
 
 ### General Purpose
 
 | Command | Layout | What It's For |
 | :--- | :--- | :--- |
-| `zdev` | God Mode | AI agent + LazyGit + workbench shell |
-| `zfull` | Full Dev | Editor + LazyGit + terminal |
-| `zgrove` | Grove | Full-stack: server, logs, tests, git, files across 4 tabs |
 | `zdebug` | Debug | Log stacking, process inspector, floating notes, reproduce/fix tabs |
 
 ### Workflow-Specific
@@ -95,6 +92,7 @@ Tools from the community worth checking out:
 
 | Project | What It Does |
 | :--- | :--- |
+| [**Grove**](https://github.com/thisguymartin/grove) | Terminal workspace for parallel git branches — AI agent + LazyGit + Zellij worktrees. |
 | [**Promptfoo**](https://github.com/promptfoo/promptfoo) | LLM testing, evaluation & red-teaming. |
 | [**Heretic**](https://github.com/p-e-w/heretic) | Transformer parameter optimization via directional ablation. |
 | [**Impeccable**](https://github.com/pbakaus/impeccable) | Design skill for AI coding assistants — 17 commands + anti-patterns. |
@@ -162,10 +160,9 @@ source ~/.zshrc
 Pick a layout and go:
 
 ```bash
-zgrove           # Full-stack dev workspace
 cd ~/my-api && znode   # Node.js project with pre-wired commands
 cd ~/my-svc && zgo     # Go project with pre-wired commands
-zdev             # AI agent + git + shell
+zdebug           # Debug workspace with log stacking
 ```
 
 All tools are keyboard-driven. See [CHEATSHEET.md](CHEATSHEET.md) for keybindings and workflows.
