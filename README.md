@@ -71,7 +71,9 @@ It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for diffe
 
 ## AI Tools (Optional)
 
-The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules/skills are included for Claude Code, Cursor, and GitHub Copilot.
+The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules are included for Claude Code, Cursor, and GitHub Copilot.
+
+For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://github.com/pbakaus/impeccable) separately into `~/.claude/skills/`.
 
 | Agent | Specialty | Invoke With |
 | :--- | :--- | :--- |
@@ -84,7 +86,7 @@ The repo includes configs for AI coding tools — these are entirely optional an
 | **Security** | Vulnerability scanning | `@security` |
 | **PM** | Linear integration & project mgmt | `@linear` |
 
-Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Assistant rules live in [`.claude/rules/`](.claude/rules/), [`.cursor/rules/`](.cursor/rules/), and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
+Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)), [`.cursor/rules/`](.cursor/rules/), and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
 
 ## Open-Source Tools of Interest
 
@@ -95,7 +97,7 @@ Tools and projects from the community that complement this workflow:
 | [**Grove**](https://github.com/thisguymartin/grove) | Terminal workspace for parallel git branches — AI agent + LazyGit + Zellij worktrees. |
 | [**Promptfoo**](https://github.com/promptfoo/promptfoo) | LLM testing, evaluation & red-teaming. |
 | [**Heretic**](https://github.com/p-e-w/heretic) | Transformer parameter optimization via directional ablation. |
-| [**Impeccable**](https://github.com/pbakaus/impeccable) | Design skill for AI coding assistants — 17 commands + anti-patterns. |
+| [**Impeccable**](https://github.com/pbakaus/impeccable) | Design skill for AI coding assistants — 17 commands + anti-patterns. Install into `~/.claude/skills/` for frontend design skills. |
 | [**OpenViking**](https://github.com/volcengine/OpenViking) | Context database for AI agents — unified memory and skills management. |
 
 ## Installation

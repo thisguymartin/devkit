@@ -12,8 +12,10 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 - `zellij/layouts/` -- KDL layout files for Zellij workspaces (lazyai, fulldev, grove, testrunner, etc.)
 - `zellij/launch-lazyai.sh` -- Launcher script; supports `AI_EDITOR` env var (`opencode`, `claude`, etc.)
 - `opencode/aig_agents/` -- AI agent persona definitions for OpenCode (advisor, architect, engineer, QA, security, etc.)
-- `skills/` -- AI assistant skill definitions (code quality, debugging, flow diagrams, frontend design, etc.)
-- `.claude/rules/` -- Claude Code rules (mirrored from `skills/` into Claude-specific format)
+- `skills/rules/` -- Always-on coding standards (code quality, engineering principles, security, workflow)
+- `skills/commands/` -- On-demand slash commands (refactor-challenge, trace-debug, explain-code, etc.)
+- `skills/plane/` -- Plane.so project management commands
+- `.claude/rules/` -- Symlinked from `skills/rules/` (single source of truth)
 - `.cursor/rules/` -- Cursor rules (same standards, `.mdc` format)
 - `.github/copilot-instructions.md` -- GitHub Copilot instructions
 - `.config/` -- Tool configs: Ghostty terminal, git-delta, Starship prompt, shell enhancements (zoxide, fzf, eza aliases)
@@ -77,17 +79,26 @@ OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax 
 - `@security` -- vulnerability scanning
 - `@linear` -- Linear project management integration
 
-### Skills System
-Skills in `skills/` are teaching-oriented (Socratic method). Key skills:
-- `refactor-challenge` and `trace-debug` guide the developer rather than fixing directly
-- `explain-code` and `why-this-way` analyze without modifying
-- `generate-flow` produces Mermaid diagrams from code
-- `complexity-check` teaches performance reasoning
-- `frontend-design/` includes sub-skills (audit, polish, critique, animate, etc.) with reference docs
+### Rules & Commands
+Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically.
+
+On-demand commands in `skills/commands/` are invoked as slash commands:
+- `/refactor-challenge` and `/trace-debug` -- Socratic tutors (guide, don't fix)
+- `/explain-code` and `/why-this-way` -- analyze without modifying
+- `/generate-flow` -- Mermaid diagrams from code
+- `/complexity-check` -- performance reasoning
+- `/pr-automation` -- PR creation
+
+Plane commands in `skills/plane/` manage project work:
+- `/plane-work`, `/plane-triage`, `/plane-standup`, `/plane-sprint-run`, `/plane-close`, `/plane-review`
+
+Frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, etc.) are provided by [Impeccable](https://github.com/pbakaus/impeccable) -- install separately into `~/.claude/skills/`.
 
 ## When Editing This Repo
 
 - Layout files use KDL format (`*.kdl`) -- Zellij's configuration language
 - Agent configs are markdown files with persona/behavior instructions
 - Shell scripts should use `set -e` and follow existing patterns in `scripts/`
-- The `.claude/rules/`, `.cursor/rules/`, `.github/copilot-instructions.md`, and `skills/` directories contain overlapping content adapted for each tool's format -- keep them in sync when modifying standards
+- `skills/rules/` is the single source of truth for always-on rules -- `.claude/rules/` files are symlinks. Edit files in `skills/rules/`, not `.claude/rules/`
+- `skills/commands/` and `skills/plane/` are slash commands symlinked into `~/.claude/skills/`
+- `.cursor/rules/` and `.github/copilot-instructions.md` are maintained separately in their tool-specific formats -- update them when modifying standards in `skills/`
