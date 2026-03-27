@@ -71,11 +71,13 @@ External skill packs installed separately into `~/.claude/skills/`:
 # Rules (always-on) — symlink into project
 ln -sf ~/devkit/.claude/rules/ .claude/rules/
 
-# Commands (on-demand) — symlink into user skills
-mkdir -p ~/.claude/skills
-ln -sf ~/devkit/skills/commands ~/.claude/skills/commands
-ln -sf ~/devkit/skills/plane ~/.claude/skills/plane
+# Commands (on-demand) — symlink into ~/.claude/commands/
+mkdir -p ~/.claude/commands
+for f in ~/devkit/skills/commands/*.md; do ln -sf "$f" ~/.claude/commands/; done
+for f in ~/devkit/skills/plane/*.md; do ln -sf "$f" ~/.claude/commands/; done
 ```
+
+Note: `~/.claude/commands/` is where Claude Code reads slash commands (flat `.md` files with frontmatter). `~/.claude/skills/` is for plugin-style skills (directories with `SKILL.md`) — used by impeccable and other skill packs.
 
 ### Cursor
 `.cursor/rules/` contains `.mdc` formatted versions of the always-on rules. Maintained separately.
