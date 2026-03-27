@@ -17,6 +17,7 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 - `.claude/rules/` -- Symlinked from `skills/rules/` (single source of truth)
 - `.cursor/rules/` -- Cursor rules (same standards, `.mdc` format)
 - `.config/` -- Tool configs: Ghostty terminal, git-delta, Starship prompt, shell enhancements (zoxide, fzf, eza aliases)
+- `sounds/` -- Notification sounds for Claude Code hooks (Navi "Hey! Listen!" from Zelda)
 - `scripts/` -- Utility scripts (killport.sh, brew-update.sh, dev-cleanup.sh)
 
 ## Key Commands
@@ -49,6 +50,21 @@ Configs are symlinked from this repo to `~/.config/` and `~/`:
 - `.config/ghostty/config` -> `~/.config/ghostty/config`
 - `.config/git/delta.gitconfig` -> included via `git config --global include.path`
 - `.config/shell/enhancements.zsh` -> sourced from `.zshrc`
+- `.claude/settings.json` -> `~/.claude/settings.json`
+
+### Claude Code Settings
+
+```bash
+ln -sf /path/to/devkit/.claude/settings.json ~/.claude/settings.json
+```
+
+The settings include hooks that play Navi's "Hey! Listen!" sound (from The Legend of Zelda) when Claude finishes a task or sends a notification. Uses `afplay` on macOS and `aplay` on Linux.
+
+The sound path defaults to `~/personal-workspace/devkit/sounds/`. Override by setting `DEVKIT_PATH` in your shell if you cloned the repo elsewhere:
+
+```bash
+export DEVKIT_PATH="$HOME/path/to/devkit"
+```
 
 ## AI Tools (Optional)
 
