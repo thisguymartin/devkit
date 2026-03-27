@@ -9,57 +9,42 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 ## Repository Structure
 
 - `brewfile` -- Homebrew package manifest (install with `brew bundle --file=brewfile`)
-- `zellij/layouts/` -- KDL layout files for Zellij workspaces (lazyai, fulldev, grove, testrunner, etc.)
-- `zellij/launch-lazyai.sh` -- Launcher script; supports `AI_EDITOR` env var (`opencode`, `claude`, etc.)
+- `zellij/layouts/` -- KDL layout files for Zellij workspaces (api, database, debug, golang, migrations, monitor, node, pipeline, testrunner)
 - `opencode/aig_agents/` -- AI agent persona definitions for OpenCode (advisor, architect, engineer, QA, security, etc.)
 - `skills/rules/` -- Always-on coding standards (code quality, engineering principles, security, workflow)
 - `skills/commands/` -- On-demand slash commands (refactor-challenge, trace-debug, explain-code, etc.)
 - `skills/plane/` -- Plane.so project management commands
 - `.claude/rules/` -- Symlinked from `skills/rules/` (single source of truth)
 - `.cursor/rules/` -- Cursor rules (same standards, `.mdc` format)
-- `.github/copilot-instructions.md` -- GitHub Copilot instructions
 - `.config/` -- Tool configs: Ghostty terminal, git-delta, Starship prompt, shell enhancements (zoxide, fzf, eza aliases)
-- `scripts/` -- Setup and utility scripts (setup-all.sh, setup-db.sh, setup-ssl.sh, start/stop-services.sh, killport.sh, etc.)
+- `scripts/` -- Utility scripts (killport.sh, brew-update.sh, dev-cleanup.sh)
 
 ## Key Commands
 
 ```bash
-# Full environment setup
-./scripts/setup-all.sh
-
 # Install/update tools
 brew bundle --file=brewfile
 
-# Launch development workspace (God Mode: AI + LazyGit + Shell)
-zdev
-
-# Other Zellij layouts
-zfull    # Editor + LazyGit + Terminal
-zgrove   # Full-stack multi-tab
-ztest    # Test runner
-zapi     # API development
+# Zellij layouts
+zdebug   # Debug workspace with log stacking
+ztest    # Test runner (unit/integration/E2E)
+zmig     # Migrations (runner, DB console, queries, seed data)
+zapi     # API development (server, request logs, test, schema)
+zpipe    # Pipeline (build, deploy, rollback, container logs)
+zmon     # Monitor (btop + logs + Docker)
+zdb      # Database (PostgreSQL + Redis)
 znode    # Node.js development
 zgo      # Go development
 
-# Launch with specific AI editor
-AI_EDITOR=claude zellij -l zellij/layouts/lazyai.kdl
-./zellij/launch-lazyai.sh claude
-
-# Service management
-./scripts/start-services.sh   # PostgreSQL, Redis, Docker
-./scripts/stop-services.sh
-brew services list
-
 # Utilities
 ./scripts/killport.sh <port>
-./scripts/setup-db.sh
-./scripts/setup-ssl.sh
+./scripts/brew-update.sh
+./scripts/dev-cleanup.sh
 ```
 
 ## Configuration Linking
 
-Configs are symlinked from this repo to `~/.config/` and `~/`. The setup script handles:
-- `.zshrc` -> `~/.zshrc`
+Configs are symlinked from this repo to `~/.config/` and `~/`:
 - `zellij/` -> `~/.config/zellij/`
 - `.config/ghostty/config` -> `~/.config/ghostty/config`
 - `.config/git/delta.gitconfig` -> included via `git config --global include.path`
@@ -101,4 +86,4 @@ Frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, etc.) are 
 - Shell scripts should use `set -e` and follow existing patterns in `scripts/`
 - `skills/rules/` is the single source of truth for always-on rules -- `.claude/rules/` files are symlinks. Edit files in `skills/rules/`, not `.claude/rules/`
 - `skills/commands/` and `skills/plane/` are slash commands symlinked into `~/.claude/skills/`
-- `.cursor/rules/` and `.github/copilot-instructions.md` are maintained separately in their tool-specific formats -- update them when modifying standards in `skills/`
+- `.cursor/rules/` is maintained separately in `.mdc` format -- update when modifying standards in `skills/`

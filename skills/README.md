@@ -80,8 +80,5 @@ ln -sf ~/devkit/skills/plane ~/.claude/skills/plane
 ### Cursor
 `.cursor/rules/` contains `.mdc` formatted versions of the always-on rules. Maintained separately.
 
-### GitHub Copilot
-`.github/copilot-instructions.md` is a curated digest of all rules. Maintained separately.
-
 ### OpenCode
 Already configured via `opencode/aig_agents/`.

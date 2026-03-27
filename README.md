@@ -71,7 +71,7 @@ It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for diffe
 
 ## AI Tools (Optional)
 
-The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules are included for Claude Code, Cursor, and GitHub Copilot.
+The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules are included for Claude Code and Cursor.
 
 For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://github.com/pbakaus/impeccable) separately into `~/.claude/skills/`.
 
@@ -86,7 +86,7 @@ For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/fron
 | **Security** | Vulnerability scanning | `@security` |
 | **PM** | Linear integration & project mgmt | `@linear` |
 
-Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)), [`.cursor/rules/`](.cursor/rules/), and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
+Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
 
 ## Open-Source Tools of Interest
 
@@ -126,10 +126,6 @@ brew bundle --file=brewfile
 **3. Link configurations**
 
 ```bash
-# Shell
-mv ~/.zshrc ~/.zshrc.backup 2>/dev/null || true
-ln -sf ~/devkit/.zshrc ~/.zshrc
-
 # Zellij layouts
 mkdir -p ~/.config/zellij
 ln -sf ~/devkit/zellij/layouts ~/.config/zellij/layouts
@@ -143,12 +139,6 @@ git config --global include.path ~/devkit/.config/git/delta.gitconfig
 
 # Shell enhancements (zoxide, fzf+fd, eza aliases, layout aliases)
 echo 'source ~/devkit/.config/shell/enhancements.zsh' >> ~/.zshrc
-```
-
-Or run the full setup script:
-
-```bash
-./scripts/setup-all.sh
 ```
 
 **4. Reload shell**
@@ -167,13 +157,4 @@ cd ~/my-svc && zgo     # Go project with pre-wired commands
 zdebug           # Debug workspace with log stacking
 ```
 
-All tools are keyboard-driven. See [CHEATSHEET.md](CHEATSHEET.md) for keybindings and workflows.
-
-## Documentation
-
-| Doc | What's Inside |
-| :--- | :--- |
-| [SETUP.md](SETUP.md) | Complete installation, databases, SSL, services |
-| [TOOLS.md](TOOLS.md) | Deep dive into every tool with examples |
-| [CHEATSHEET.md](CHEATSHEET.md) | Keyboard shortcuts and quick commands |
-| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Common issues and solutions |
+All tools are keyboard-driven. Layout aliases are defined in `.config/shell/enhancements.zsh`.
