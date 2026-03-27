@@ -73,7 +73,11 @@ It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for diffe
 
 The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules are included for Claude Code and Cursor.
 
-For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://github.com/pbakaus/impeccable) separately into `~/.claude/skills/`.
+For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://impeccable.style/):
+
+```bash
+npx skills add pbakaus/impeccable
+```
 
 | Agent | Specialty | Invoke With |
 | :--- | :--- | :--- |
