@@ -2,7 +2,7 @@
 
 **Created:** 2026-04-03
 **Author:** Planning Agent
-**Status:** Draft - Pending Review
+**Status:** Implemented — Pending Validation
 
 ---
 
@@ -336,18 +336,38 @@ This is enforced by:
 
 ### 10. Open Questions
 
-- [ ] Confirm exact OpenCode `opencode.json` schema for model routing and MCP configuration
-- [ ] Verify model config IDs match Zen's actual model catalog (e.g., `opencode/gpt-5.4` vs `gpt-5.4`)
-- [ ] Determine if OpenCode supports Plan/Build agent mode natively or if it's manual switching
-- [ ] Check if tokenscope plugin is installable or if it's built into OpenCode
-- [ ] Confirm Copilot CLI installation method (`npm install -g @github/copilot` or `gh extension install`)
-- [ ] Decide whether to keep `planning-agent.md` alongside new `architect.md` or consolidate
+- [x] ~~Confirm exact OpenCode `opencode.json` schema~~ — Done. Schema at `https://opencode.ai/config.json`. Uses `type: "local"/"remote"` for MCP, `plugin` as array of npm names, `instructions` for rules.
+- [x] ~~Determine if OpenCode supports Plan/Build agent mode natively~~ — Yes. Built-in `plan` and `build` primary agents with Tab switching. Per-agent model overrides supported.
+- [x] ~~Check if tokenscope plugin is installable~~ — Yes. npm package `@ramtinj95/opencode-tokenscope`. Add to `plugin` array in opencode.json.
+- [x] ~~Confirm Copilot CLI installation method~~ — `gh extension install github/gh-copilot` after installing `gh` via Homebrew.
+- [ ] Verify model config IDs match Zen's actual model catalog (e.g., `opencode/gpt-5.4` vs `gpt-5.4`) — **Needs live testing**
+- [ ] Decide whether to keep `planning-agent.md` alongside new `architect.md` or consolidate — kept both for now, different system prompts
+- [ ] Symlink agents to OpenCode's expected path: `ln -sf /path/to/devkit/opencode/aig_agents ~/.config/opencode/agents`
+- [ ] Symlink commands: `ln -sf /path/to/devkit/opencode/commands ~/.config/opencode/commands`
 
 ---
 
-### 11. Next Steps
+### 11. OpenCode Configuration Notes (from research)
 
-1. **Review:** Get user approval on this plan
-2. **Implement:** Begin with Steps 1-3 (parallelizable)
-3. **Validate:** Test agent routing in OpenCode
+**Agent paths (important):** OpenCode expects agents at `~/.config/opencode/agents/` (global) or `.opencode/agents/` (per-project). The devkit stores them at `opencode/aig_agents/`. Symlink required:
+
+```bash
+ln -sf /path/to/devkit/opencode/aig_agents ~/.config/opencode/agents
+ln -sf /path/to/devkit/opencode/commands ~/.config/opencode/commands
+```
+
+**Plugin installation:** Plugins auto-install via Bun to `~/.cache/opencode/node_modules/`. Just add to `plugin` array in opencode.json.
+
+**Permission system:** Granular control with `permission` object: `edit`, `bash`, `webfetch`, `task`, `skill` set to `ask`/`allow`/`deny`. Supports glob patterns for task delegation.
+
+**Model switching:** Built-in `plan` and `build` primary agents switch with Tab key. Variant cycling (reasoning effort) with keybind.
+
+---
+
+### 12. Next Steps
+
+1. **Symlink:** Set up symlinks to `~/.config/opencode/agents/` and `~/.config/opencode/commands/`
+2. **Validate:** Test agent routing in OpenCode with live Zen credits
+3. **Verify Model IDs:** Confirm Zen model catalog matches config IDs
 4. **Iterate:** Adjust models based on 2-3 weeks of usage data
+5. **Consider:** Adding `permission` controls to agents (e.g., architect gets `edit: deny`, `bash: deny`)

@@ -52,6 +52,9 @@ Configs are symlinked from this repo to `~/.config/` and `~/`:
 - `.config/git/delta.gitconfig` -> included via `git config --global include.path`
 - `.config/shell/enhancements.zsh` -> sourced from `.zshrc`
 - `.claude/settings.json` -> `~/.claude/settings.json`
+- `opencode/aig_agents/` -> `~/.config/opencode/agents/` (OpenCode agent definitions)
+- `opencode/commands/` -> `~/.config/opencode/commands/` (OpenCode slash commands)
+- `opencode.json` -> project-level OpenCode config (MCP servers, plugins, model routing)
 
 ### Claude Code Settings
 

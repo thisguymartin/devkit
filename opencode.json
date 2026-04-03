@@ -1,7 +1,8 @@
 {
-  "$schema": "https://opencode.ai/config.schema.json",
-  "name": "devkit",
-  "version": "1.0.0",
+  "$schema": "https://opencode.ai/config.json",
+
+  "model": "opencode/gpt-5.4",
+  "small_model": "opencode/gpt-5.4-mini",
 
   "agent": {
     "plan": {
@@ -14,161 +15,47 @@
     }
   },
 
-  "models": {
-    "thinking": [
-      {
-        "id": "opencode/gemini-3.1-pro",
-        "role": "default-planner",
-        "cost": "$2/$12 per 1M tokens",
-        "context": "1M",
-        "notes": "80.6% SWE-bench. Best price-to-performance."
-      },
-      {
-        "id": "opencode/gpt-5.4",
-        "role": "second-opinion",
-        "cost": "$2.50/$15 per 1M tokens",
-        "context": "1M",
-        "notes": "Better structured output. Swap when Gemini gives vague answers."
-      }
-    ],
-    "doing": [
-      {
-        "id": "opencode/gpt-5.4",
-        "role": "default-builder",
-        "cost": "$2.50/$15 per 1M tokens",
-        "context": "1M",
-        "notes": "Fastest iteration. Most idiomatic Go/TS."
-      },
-      {
-        "id": "opencode/gpt-5.3-codex",
-        "role": "autonomous-coder",
-        "cost": "$1.75/$14 per 1M tokens",
-        "context": "1M",
-        "notes": "Spec-driven test-fix loops. More precise on defined tasks."
-      },
-      {
-        "id": "opencode/glm-5",
-        "role": "budget-builder",
-        "cost": "$1/$3.20 per 1M tokens",
-        "context": "200K",
-        "notes": "~80% GPT 5.4 quality at ~30% cost."
-      },
-      {
-        "id": "opencode/kimi-k2.5",
-        "role": "frontend-specialist",
-        "cost": "$0.60/$3 per 1M tokens",
-        "context": "256K",
-        "notes": "Vision-to-code. Frontend/UI specialist."
-      },
-      {
-        "id": "opencode/gpt-5.4-mini",
-        "role": "lightweight",
-        "cost": "$0.75/$4.50 per 1M tokens",
-        "context": "128K",
-        "notes": "Simpler implementation. Orchestration. Routing."
-      }
-    ],
-    "bulk": [
-      {
-        "id": "opencode/minimax-m2.5-free",
-        "role": "default-free",
-        "cost": "FREE",
-        "notes": "Best free model. 80.2% SWE-bench. May use data for training."
-      },
-      {
-        "id": "opencode/qwen3.6-plus-free",
-        "role": "free-alternative",
-        "cost": "FREE",
-        "notes": "Alibaba latest. Worth testing as alternative."
-      },
-      {
-        "id": "opencode/big-pickle",
-        "role": "free-experimental",
-        "cost": "FREE",
-        "notes": "Stealth model. Community buzz positive."
-      },
-      {
-        "id": "opencode/minimax-m2.5",
-        "role": "budget-fallback",
-        "cost": "$0.30/$1.20 per 1M tokens",
-        "notes": "Fallback when free hits limits."
-      },
-      {
-        "id": "opencode/gemini-3-flash",
-        "role": "docs",
-        "cost": "$0.50/$3 per 1M tokens",
-        "notes": "Fast docs/READMEs. Better prose quality."
-      },
-      {
-        "id": "opencode/gpt-5.4-nano",
-        "role": "trivial",
-        "cost": "$0.20/$1.25 per 1M tokens",
-        "notes": "Absolute cheapest paid. Git ops, trivial completions."
-      }
-    ],
-    "disabled": [
-      "anthropic/claude-opus-4-6",
-      "anthropic/claude-sonnet-4-5",
-      "anthropic/claude-haiku-4-5",
-      "opencode/gpt-5.4-pro",
-      "opencode/gpt-5.0",
-      "opencode/gpt-5.1",
-      "opencode/gpt-5.2"
-    ]
-  },
+  "instructions": [
+    "skills/rules/code-quality-standards.md",
+    "skills/rules/engineering-principles.md",
+    "skills/rules/development-workflow.md",
+    "skills/rules/security-awareness.md"
+  ],
 
   "mcp": {
-    "servers": {
-      "github": {
-        "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-github"],
-        "env": {
-          "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-        },
-        "scope": "global",
-        "notes": "Always loaded. Core workflow."
-      },
-      "context7": {
-        "command": "npx",
-        "args": ["-y", "@upstash/context7-mcp"],
-        "scope": "project",
-        "notes": "Up-to-date library docs. Load when using unfamiliar APIs."
-      },
-      "linear": {
-        "command": "npx",
-        "args": ["-y", "@linear/mcp-server"],
-        "env": {
-          "LINEAR_API_KEY": "${LINEAR_API_KEY}"
-        },
-        "scope": "project",
-        "notes": "Issue tracking. Load when managing project issues."
-      },
-      "filesystem": {
-        "command": "npx",
-        "args": ["-y", "@modelcontextprotocol/server-filesystem", "${HOME}"],
-        "scope": "project",
-        "notes": "Cross-repo file access. Not needed for single-repo work."
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_TOKEN}"
       }
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      }
+    },
+    "linear": {
+      "type": "local",
+      "command": ["npx", "-y", "@linear/mcp-server"],
+      "environment": {
+        "LINEAR_API_KEY": "{env:LINEAR_API_KEY}"
+      }
+    },
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem"],
+      "enabled": false
     }
   },
 
-  "plugins": {
-    "tokenscope": {
-      "enabled": true,
-      "notes": "Per-session cost tracking. Install: opencode plugin install tokenscope"
-    }
-  },
+  "plugin": [
+    "@ramtinj95/opencode-tokenscope"
+  ],
 
-  "budget": {
-    "zen_monthly_limit": 90,
-    "auto_reload": false,
-    "auto_reload_max": 10,
-    "notes": "Total budget: $100/mo — Copilot Pro $10 + OpenCode Zen $90"
-  },
-
-  "rules": {
-    "cross_model_review": "Never review code with the same model that wrote it.",
-    "model_routing": "Expensive model for thinking. Cheap model for doing. Free model for grunt work. Copilot for everything small.",
-    "copilot_first": "Use Copilot's 300 free premium requests for quick questions before burning Zen credits."
+  "tools": {
+    "filesystem*": false
   }
 }
