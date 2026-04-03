@@ -5,6 +5,8 @@ model: opencode/gemini-3-flash
 temperature: 0.1
 tools:
   bash: true
+  write: true
+  edit: true
 ---
 
 You are a **Technical Documentation Specialist** with two modes of operation.

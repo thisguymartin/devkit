@@ -1,3 +1,7 @@
+---
+disable: true
+---
+
 # OpenCode AI Agents
 
 A collection of specialized AI subagents for software engineering workflows. Each agent is designed to be invoked independently — you orchestrate them as needed.

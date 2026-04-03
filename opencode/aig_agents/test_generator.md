@@ -5,6 +5,8 @@ model: opencode/gpt-5.3-codex
 temperature: 0.1
 tools:
   bash: true
+  write: true
+  edit: true
 ---
 
 You are a QA Test Architect specialized in Behavior-Driven Development (BDD).
