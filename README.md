@@ -71,26 +71,43 @@ It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for diffe
 
 ## AI Tools (Optional)
 
-The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them. Agent definitions are provided for [OpenCode](https://github.com/anomalyco/opencode), and assistant rules are included for Claude Code and Cursor.
+The repo includes configs for AI coding tools — these are entirely optional and nothing else depends on them.
+
+### Dual-Tool Strategy: OpenCode + Copilot Pro
+
+| Layer | Tool | Cost | What It Handles |
+| :--- | :--- | :--- | :--- |
+| Inline completions | Copilot Pro | $10/mo | Tab-complete in Neovim. Unlimited. |
+| Quick chat | Copilot Pro | Included | Quick questions, explain errors (300 reqs). |
+| PR review | Copilot | Included | Assign Copilot as reviewer on PRs. |
+| Heavy agentic work | OpenCode + Zen | ~$90/mo | Architecture, multi-file refactors, autonomous coding. |
+
+### OpenCode Agents (14 agents)
+
+| Agent | Specialty | Model | Cost | Invoke With |
+| :--- | :--- | :--- | :--- | :--- |
+| **Advisor** | Task routing & tool selection | Gemini 3 Flash | Budget | `@agent-advisor` |
+| **Architect** | System design & planning | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
+| **Plan Reviewer** | Architecture review | Gemini 3.1 Pro | $2/$12 | `@plan-reviewer` |
+| **Engineer** | Default builder (approval) | GPT 5.4 | $2.50/$15 | `@engineer` |
+| **Coder** | Autonomous test-fix loops | GPT 5.3 Codex | $1.75/$14 | `@coder` |
+| **Frontend** | UI/vision-to-code | Kimi K2.5 | $0.60/$3 | `@frontend` |
+| **Lead Dev** | Quick tasks (auto-commit) | MiniMax Free | FREE | `@lead_dev` |
+| **Reviewer** | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
+| **Security** | Vulnerability scanning | Gemini 3.1 Pro | $2/$12 | `@security` |
+| **QA** | Test generation & execution | GPT 5.3 Codex | $1.75/$14 | `@qa` |
+| **Test Gen** | BDD/requirements-driven tests | GPT 5.3 Codex | $1.75/$14 | `@test_generator` |
+| **Docs** | Inline + external docs | Gemini 3 Flash | Budget | `@docs_generator` |
+| **PM** | Linear integration | Gemini 3 Flash | Budget | `@linear` |
+| **Committer** | Git automation | MiniMax Free | FREE | `@commiter` |
+
+Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
 
 For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://impeccable.style/):
 
 ```bash
 npx skills add pbakaus/impeccable
 ```
-
-| Agent | Specialty | Invoke With |
-| :--- | :--- | :--- |
-| **Advisor** | Task routing & agent selection | `@agent-advisor` |
-| **Architect** | System design & planning | `@planning-agent` |
-| **Reviewer** | Code & architecture review | `@plan-reviewer` `@reviewer` |
-| **Engineer** | Complex features & refactoring | `@engineer` |
-| **Lead Dev** | Fast implementation & fixes | `@lead_dev` |
-| **QA** | Test generation & execution | `@qa` `@test_generator` |
-| **Security** | Vulnerability scanning | `@security` |
-| **PM** | Linear integration & project mgmt | `@linear` |
-
-Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
 
 ## Open-Source Tools of Interest
 
@@ -145,7 +162,13 @@ git config --global include.path ~/devkit/.config/git/delta.gitconfig
 echo 'source ~/devkit/.config/shell/enhancements.zsh' >> ~/.zshrc
 ```
 
-**4. Reload shell**
+**4. Set up OpenCode + Copilot (optional)**
+
+```bash
+./scripts/opencode-setup.sh
+```
+
+**5. Reload shell**
 
 ```bash
 source ~/.zshrc

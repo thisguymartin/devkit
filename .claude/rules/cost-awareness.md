@@ -1,0 +1,1 @@
+../../skills/rules/cost-awareness.md

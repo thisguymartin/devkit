@@ -18,7 +18,8 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 - `.cursor/rules/` -- Cursor rules (same standards, `.mdc` format)
 - `.config/` -- Tool configs: Ghostty terminal, git-delta, Starship prompt, shell enhancements (zoxide, fzf, eza aliases)
 - `sounds/` -- Notification sounds for Claude Code hooks (Navi "Hey! Listen!" from Zelda)
-- `scripts/` -- Utility scripts (killport.sh, brew-update.sh, dev-cleanup.sh)
+- `opencode.json` -- OpenCode configuration (model routing, MCP servers, plugins)
+- `scripts/` -- Utility scripts (killport.sh, brew-update.sh, dev-cleanup.sh, opencode-setup.sh)
 
 ## Key Commands
 
@@ -41,6 +42,10 @@ zgo      # Go development
 ./scripts/killport.sh <port>
 ./scripts/brew-update.sh
 ./scripts/dev-cleanup.sh
+./scripts/opencode-setup.sh  # Set up OpenCode + Copilot Pro
+
+# OpenCode
+oc           # Launch OpenCode (alias)
 ```
 
 ## Configuration Linking
@@ -51,6 +56,16 @@ Configs are symlinked from this repo to `~/.config/` and `~/`:
 - `.config/git/delta.gitconfig` -> included via `git config --global include.path`
 - `.config/shell/enhancements.zsh` -> sourced from `.zshrc`
 - `.claude/settings.json` -> `~/.claude/settings.json`
+- `opencode/aig_agents/` -> `~/.config/opencode/agents/` (via `scripts/opencode-setup.sh`)
+- `opencode.json` -> `~/.config/opencode/config.json` (via `scripts/opencode-setup.sh`)
+
+### OpenCode + Copilot Pro Setup
+
+```bash
+./scripts/opencode-setup.sh
+```
+
+This symlinks OpenCode agents and config, and installs the Copilot CLI extension. See `opencode/aig_agents/README.md` for the full agent reference and model routing strategy.
 
 ### Claude Code Settings
 
@@ -70,15 +85,24 @@ export DEVKIT_PATH="$HOME/path/to/devkit"
 
 AI agent and assistant configs are included but optional -- the core workflow (tools, layouts, shell configs) works without them.
 
+### Dual-Tool Strategy
+- **OpenCode + Zen** (~$90/mo) -- Heavy agentic work: architecture, multi-file refactors, autonomous coding, code review pipelines
+- **Copilot Pro** ($10/mo) -- Lightweight: inline completions (unlimited), quick chat (300 reqs), PR review (free), CLI agents
+- **Claude Code** -- Kept for work use; devkit includes Claude rules and settings for both tools
+
 ### OpenCode Agents
-OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax inside OpenCode:
-- `@agent-advisor` -- routes tasks to appropriate agents
-- `@planning-agent` -- system design and architecture
-- `@engineer` / `@lead_dev` -- implementation
-- `@reviewer` / `@plan-reviewer` -- code review
-- `@qa` / `@test_generator` -- testing
-- `@security` -- vulnerability scanning
-- `@linear` -- Linear project management integration
+14 specialized agents in `opencode/aig_agents/`, invoked with `@agent-name` syntax inside OpenCode:
+- `@agent-advisor` -- routes tasks to appropriate agents and tools
+- `@planning-agent` / `@plan-reviewer` -- architecture and plan review (Gemini 3.1 Pro)
+- `@engineer` -- default builder (GPT 5.4, requires approval)
+- `@coder` -- autonomous test-fix loops (GPT 5.3 Codex)
+- `@frontend` -- UI/vision-to-code (Kimi K2.5)
+- `@lead_dev` -- quick tasks, auto-commits (MiniMax Free)
+- `@reviewer` / `@security` -- code review and security audit (Gemini 3.1 Pro, cross-model)
+- `@qa` / `@test_generator` -- testing (GPT 5.3 Codex)
+- `@docs_generator` -- documentation (Gemini 3 Flash)
+- `@linear` -- Linear project management
+- `@commiter` -- git automation (MiniMax Free)
 
 ### Rules & Commands
 Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically.
@@ -101,5 +125,7 @@ Frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, etc.) are 
 - Agent configs are markdown files with persona/behavior instructions
 - Shell scripts should use `set -e` and follow existing patterns in `scripts/`
 - `skills/rules/` is the single source of truth for always-on rules -- `.claude/rules/` files are symlinks. Edit files in `skills/rules/`, not `.claude/rules/`
+- `opencode/aig_agents/` is the single source of truth for OpenCode agents -- `~/.config/opencode/agents/` is a symlink
+- Agent model IDs use the `opencode/` prefix for Zen models (e.g., `opencode/gpt-5.4`)
 - `skills/commands/` and `skills/plane/` are slash commands symlinked into `~/.claude/skills/`
 - `.cursor/rules/` is maintained separately in `.mdc` format -- update when modifying standards in `skills/`

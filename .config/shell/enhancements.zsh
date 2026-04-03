@@ -57,3 +57,8 @@ alias zapi='zellij --layout ~/devkit/zellij/layouts/api.kdl'
 alias zdebug='zellij --layout ~/devkit/zellij/layouts/debug.kdl'
 alias znode='zellij --layout ~/devkit/zellij/layouts/node.kdl'
 alias zgo='zellij --layout ~/devkit/zellij/layouts/golang.kdl'
+
+# --- OpenCode aliases ---
+if command -v opencode &> /dev/null; then
+    alias oc='opencode'
+fi
