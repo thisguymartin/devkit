@@ -26,6 +26,7 @@ brew "golang"    # Go programming language
 brew "dotnet"    # .NET SDK
 brew "docker"    # Container platform
 brew "gh"        # GitHub CLI (for Copilot and GitHub integration)
+                 # After brew bundle, run: gh extension install github/gh-copilot
 
 # Applications (Casks)
 cask "ghostty"

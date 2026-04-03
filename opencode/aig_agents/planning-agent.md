@@ -1,7 +1,7 @@
 ---
 description: Software Architect - Planning & Flow Architecture
 mode: subagent
-model: anthropic/claude-opus-4-6 
+model: opencode/gemini-3.1-pro
 temperature: 0.3
 ---
 

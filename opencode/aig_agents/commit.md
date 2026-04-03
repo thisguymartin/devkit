@@ -1,7 +1,7 @@
 ---
 description: Git Automation Agent - Semantic Commits with Branch Protection
 mode: subagent
-model: google/gemini-2.5-flash-lite
+model: opencode/minimax-m2.5-free
 temperature: 0.1
 tools:
   bash: true

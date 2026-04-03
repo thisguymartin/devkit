@@ -1,7 +1,7 @@
 ---
 description: Linear Project & Issue Creator via MCP
 mode: subagent
-model: google/gemini-3-flash-preview
+model: opencode/gemini-3-flash
 temperature: 0.2
 # tools:
 #   mcp: linear

@@ -1,7 +1,7 @@
 ---
 description: QA Automation Architect (Multi-Language Test Coverage)
 mode: subagent
-model: google/gemini-3-flash-preview
+model: opencode/gpt-5.3-codex
 temperature: 0.1
 tools:
   bash: true
