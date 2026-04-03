@@ -79,18 +79,22 @@ For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/fron
 npx skills add pbakaus/impeccable
 ```
 
-| Agent | Specialty | Invoke With |
-| :--- | :--- | :--- |
-| **Advisor** | Task routing & agent selection | `@agent-advisor` |
-| **Architect** | System design & planning | `@planning-agent` |
-| **Reviewer** | Code & architecture review | `@plan-reviewer` `@reviewer` |
-| **Engineer** | Complex features & refactoring | `@engineer` |
-| **Lead Dev** | Fast implementation & fixes | `@lead_dev` |
-| **QA** | Test generation & execution | `@qa` `@test_generator` |
-| **Security** | Vulnerability scanning | `@security` |
-| **PM** | Linear integration & project mgmt | `@linear` |
+| Agent | Specialty | Model | Invoke With |
+| :--- | :--- | :--- | :--- |
+| **Advisor** | Task routing & model selection | Gemini 3.1 Pro | `@agent-advisor` |
+| **Architect** | System design & planning | Gemini 3.1 Pro | `@architect` |
+| **Engineer** | Complex, high-risk implementation | GPT 5.4 | `@engineer` |
+| **Lead Dev** | Quick, low-risk implementation | GPT 5.4 | `@lead_dev` |
+| **Coder** | Autonomous test-fix loops | GPT 5.3 Codex | `@coder` |
+| **Budget Builder** | Cost-efficient implementation | GLM 5 | `@budget-builder` |
+| **Frontend** | UI/vision-to-code specialist | Kimi K2.5 | `@frontend` |
+| **Reviewer** | Code & architecture review | Gemini 3.1 Pro | `@reviewer` `@plan-reviewer` |
+| **Security** | Vulnerability scanning | Gemini 3.1 Pro | `@security` |
+| **QA** | Test generation & execution | Gemini 3 Flash | `@qa` `@test_generator` |
+| **Documenter** | Inline & external documentation | Gemini 3 Flash | `@documenter` |
+| **PM** | Linear project management | Gemini 3 Flash | `@linear` |
 
-Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
+Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Global config (plugins, MCP servers) in [`opencode.json`](opencode.json). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
 
 ## Open-Source Tools of Interest
 

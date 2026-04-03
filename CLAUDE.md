@@ -71,14 +71,25 @@ export DEVKIT_PATH="$HOME/path/to/devkit"
 AI agent and assistant configs are included but optional -- the core workflow (tools, layouts, shell configs) works without them.
 
 ### OpenCode Agents
-OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax inside OpenCode:
-- `@agent-advisor` -- routes tasks to appropriate agents
-- `@planning-agent` -- system design and architecture
-- `@engineer` / `@lead_dev` -- implementation
-- `@reviewer` / `@plan-reviewer` -- code review
+OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax inside OpenCode. Global config (plugins, MCP servers) in `opencode.json`.
+
+**Thinking agents** (Gemini 3.1 Pro -- read-only):
+- `@agent-advisor` -- routes tasks to appropriate agents and models
+- `@architect` -- system design and architecture
+- `@plan-reviewer` / `@reviewer` / `@security` -- code and architecture review
+
+**Doing agents** (GPT 5.4 / Codex / GLM 5 / Kimi K2.5 -- full access):
+- `@engineer` -- complex, high-risk implementation (approval required)
+- `@lead_dev` -- quick, low-risk implementation (auto-commit)
+- `@coder` -- autonomous test-fix loops (GPT 5.3 Codex)
+- `@budget-builder` -- cost-efficient implementation (GLM 5)
+- `@frontend` -- UI/vision-to-code specialist (Kimi K2.5)
+
+**Utility agents** (Gemini 3 Flash / GPT 5.4 Nano -- cheap):
 - `@qa` / `@test_generator` -- testing
-- `@security` -- vulnerability scanning
-- `@linear` -- Linear project management integration
+- `@documenter` -- inline and external documentation
+- `@linear` -- Linear project management via MCP
+- `@commiter` -- git commits with branch protection
 
 ### Rules & Commands
 Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically.

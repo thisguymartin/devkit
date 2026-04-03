@@ -1,7 +1,7 @@
 ---
 description: Collaborative Test Generator (Requirements-Driven)
 mode: subagent
-model: google/gemini-2.5-flash-lite
+model: opencode/gemini-3-flash
 temperature: 0.1
 tools:
   bash: true

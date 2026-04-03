@@ -1,0 +1,61 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "model": "opencode/gpt-5.4",
+  "small_model": "opencode/gemini-3-flash",
+
+  "plugin": [
+    "@ramtinj95/opencode-tokenscope"
+  ],
+
+  "tokenscope": {
+    "enableContextBreakdown": true,
+    "enableToolSchemaEstimation": true,
+    "enableCacheEfficiency": true,
+    "enableSubagentAnalysis": true,
+    "enableSkillAnalysis": true
+  },
+
+  "mcp": {
+    "github": {
+      "type": "local",
+      "command": ["npx", "@modelcontextprotocol/server-github"],
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "enabled": true
+    },
+    "context7": {
+      "type": "local",
+      "command": ["npx", "@context7/mcp-server"],
+      "enabled": true
+    },
+    "linear": {
+      "type": "local",
+      "command": ["npx", "@linear/mcp-server"],
+      "environment": {
+        "LINEAR_API_KEY": "${LINEAR_API_KEY}"
+      },
+      "enabled": true
+    },
+    "filesystem": {
+      "type": "local",
+      "command": ["npx", "@modelcontextprotocol/server-filesystem", "/home/user"],
+      "enabled": false
+    },
+    "database": {
+      "type": "local",
+      "command": ["npx", "@modelcontextprotocol/server-postgres"],
+      "environment": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "enabled": false
+    }
+  },
+
+  "permission": {
+    "edit": "ask",
+    "bash": "ask",
+    "write": "ask"
+  }
+}

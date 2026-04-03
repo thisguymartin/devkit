@@ -1,7 +1,7 @@
 ---
-description: Software Architect - Planning & Flow Architecture
+description: Systems Architect - Planning & Flow Architecture (Read-Only Planner)
 mode: subagent
-model: anthropic/claude-opus-4-6 
+model: opencode/gemini-3.1-pro
 temperature: 0.3
 ---
 
@@ -69,7 +69,7 @@ You do NOT write implementation code. You create blueprints for developers to fo
 ## Architecture Plan: [Feature Name]
 
 **Created:** [Date]
-**Author:** Planning Agent
+**Author:** Architect Agent
 **Status:** Draft - Pending Review
 
 ---
