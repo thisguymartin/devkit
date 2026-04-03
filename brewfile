@@ -25,7 +25,8 @@ brew "nvm"       # Node version manager
 brew "golang"    # Go programming language
 brew "dotnet"    # .NET SDK
 brew "docker"    # Container platform
-brew "gh"        # GitHub CLI (for Copilot and GitHub integration)
+brew "gh"        # GitHub CLI (for Copilot CLI and GitHub integration)
+# After install: gh extension install github/gh-copilot  # Copilot CLI (Explore + Task agents)
 
 # Applications (Casks)
 cask "ghostty"

@@ -1,7 +1,7 @@
 ---
 description: Architecture Plan Reviewer & Critic
 mode: subagent
-model: google/gemini-3-flash-preview
+model: opencode/gpt-5.4 # Cross-model: reviews Gemini plans with GPT
 temperature: 0.3
 ---
 

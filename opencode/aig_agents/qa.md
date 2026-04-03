@@ -1,7 +1,7 @@
 ---
 description: QA Automation Architect (Multi-Language Test Coverage)
 mode: subagent
-model: google/gemini-3-flash-preview
+model: opencode/minimax-m2.5-free # Tests are grunt work — use free model
 temperature: 0.1
 tools:
   bash: true

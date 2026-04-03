@@ -1,7 +1,7 @@
 ---
 description: Lead Developer & Orchestrator (Plans, Codes, Delegates)
 mode: primary
-model: google/gemini-2.5-flash-lite
+model: opencode/gpt-5.4-mini
 temperature: 0.2
 tools:
   bash: true

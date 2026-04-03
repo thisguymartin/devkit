@@ -1,18 +1,48 @@
 # OpenCode AI Agents
 
-A collection of specialized AI subagents for software engineering workflows. Each agent is designed to be invoked independently - you orchestrate them as needed.
+A collection of specialized AI subagents for software engineering workflows with model routing optimized for OpenCode Zen + Copilot Pro ($100/mo budget).
+
+**The One Rule:** Expensive model for thinking. Cheap model for doing. Free model for grunt work. Copilot for everything small.
+
+## Model Routing Strategy
+
+| Layer | Models | Cost | Purpose |
+|-------|--------|------|---------|
+| **Think (Plan Mode)** | Gemini 3.1 Pro | $2/$12 per 1M | Architecture, debugging, analysis, review |
+| **Do (Build Mode)** | GPT 5.4 / GPT 5.3 Codex | $2.50/$15 / $1.75/$14 | Implementation, iteration, test-fix loops |
+| **Budget Build** | GLM 5 / Kimi K2.5 | $1/$3.20 / $0.60/$3 | Simple tasks, frontend, save tokens |
+| **Grunt Work** | MiniMax M2.5 Free / Qwen3.6+ | FREE | Tests, docs, boilerplate |
+| **Trivial** | GPT 5.4 Nano | $0.20/$1.25 | Git ops, trivial completions |
+| **Lightweight** | Copilot Pro | $0 (included) | Inline completions, quick chat, PR review |
+
+**Cross-Model Review Rule:** Never review code with the same model that wrote it.
 
 ## Quick Reference
 
-| Agent | Purpose | Invocation |
-|-------|---------|------------|
-| `agent-advisor` | Help choose the right agent for your task | `@agent-advisor` |
-| `planning-agent` | Architecture design & task breakdown | `@planning-agent` |
-| `plan-reviewer` | Review architecture plans | `@plan-reviewer` |
-| `linear` | Create Linear projects/issues | `@linear` |
-| `lead_dev` | Orchestrate feature development (Plans, Codes, Delegates) | `@lead_dev` |
-| `engineer` | Senior implementation engineer | `@engineer` |
-| `reviewer` | Code quality review | `@reviewer` |
+| Agent | Purpose | Model | Cost Tier | Invocation |
+|-------|---------|-------|-----------|------------|
+| `agent-advisor` | Help choose the right agent | GPT 5.4 Mini | Lightweight | `@agent-advisor` |
+| **Think Mode (Planning)** | | | | |
+| `architect` | Systems architecture & design | Gemini 3.1 Pro | Think | `@architect` |
+| `planning-agent` | Architecture & task breakdown | Gemini 3.1 Pro | Think | `@planning-agent` |
+| `plan-reviewer` | Review architecture plans | GPT 5.4 | Cross-model | `@plan-reviewer` |
+| **Build Mode (Implementation)** | | | | |
+| `builder` | Default implementation (Go/TS) | GPT 5.4 | Do | `@builder` |
+| `coder` | Autonomous test-fix loops | GPT 5.3 Codex | Do | `@coder` |
+| `frontend` | UI & vision-to-code | Kimi K2.5 | Budget | `@frontend` |
+| `budget-builder` | Cost-effective implementation | GLM 5 | Budget | `@budget-builder` |
+| `engineer` | Senior orchestrator (approval req) | GPT 5.4 | Do | `@engineer` |
+| `lead_dev` | Lightweight orchestrator (auto) | GPT 5.4 Mini | Lightweight | `@lead_dev` |
+| **Quality & Review** | | | | |
+| `reviewer` | Code quality review | Gemini 3.1 Pro | Think | `@reviewer` |
+| `security` | Security audit | Gemini 3.1 Pro | Think | `@security` |
+| **Testing (Free)** | | | | |
+| `qa` | Test generation & execution | MiniMax M2.5 Free | Free | `@qa` |
+| `test_generator` | BDD test generation | MiniMax M2.5 Free | Free | `@test_generator` |
+| **Docs & Ops** | | | | |
+| `docs_generator` | Documentation | Gemini 3 Flash | Bulk | `@docs_generator` |
+| `linear` | Linear issue management | GPT 5.4 Mini | Lightweight | `@linear` |
+| `commiter` | Git commits | GPT 5.4 Nano | Trivial | `@commiter` |
 | `security` | Security audit | `@security` |
 | `qa` | Test generation & execution | `@qa` |
 | `test_generator` | BDD/Requirements-driven test generation | `@test_generator` |
@@ -75,6 +105,116 @@ Why: Security audit for authentication code before deployment
 Command: @security "Audit ./src/auth/ for authentication vulnerabilities"
 Also consider: @reviewer after security fixes to check code quality
 ```
+
+---
+
+### NEW: Architect (`architect.md`)
+
+**Purpose:** Systems architecture, migration plans, domain modeling. Read-only — cannot modify files. Default Plan mode agent.
+
+**Model:** `opencode/gemini-3.1-pro` (1M context, $2/$12, 80.6% SWE-bench)
+
+**Best For:**
+- System design and architecture decisions
+- Migration planning (database, API, framework)
+- Large codebase analysis (leverages 1M token context)
+- Debugging strategy and root cause analysis
+
+**Example Commands:**
+```bash
+@architect "Design the DB schema for properties with multi-tenant support"
+@architect "Plan migration from REST to GraphQL for user service"
+@architect "Analyze the codebase and identify performance bottlenecks"
+```
+
+**Cross-Model Review:** Plans reviewed by `@plan-reviewer` (GPT 5.4)
+
+---
+
+### NEW: Builder (`builder.md`)
+
+**Purpose:** Default implementation agent. Writes Go/TS code, runs tests, applies changes. The daily driver for Build mode.
+
+**Model:** `opencode/gpt-5.4` ($2.50/$15, 1M context)
+
+**Best For:**
+- Daily implementation work
+- Ambiguous or exploratory tasks
+- Multi-file refactors
+- When still figuring out what to build
+
+**Example Commands:**
+```bash
+@builder "Implement the DynamoDB query handler for property lookups"
+@builder "Add retry logic to the payment service with exponential backoff"
+@builder "Refactor the config module to support environment-specific overrides"
+```
+
+**Cross-Model Review:** Code reviewed by `@reviewer` (Gemini 3.1 Pro)
+
+---
+
+### NEW: Coder (`coder.md`)
+
+**Purpose:** Autonomous test-fix agent. Give it a spec + tests, it implements until all tests pass. RL-trained for agentic coding.
+
+**Model:** `opencode/gpt-5.3-codex` ($1.75/$14, 1M context)
+
+**Best For:**
+- "Implement this interface and make all tests pass"
+- Refactor modules with existing test coverage
+- Spec-driven implementation with clear acceptance criteria
+
+**Example Commands:**
+```bash
+@coder "Implement the UserRepository interface — tests are in user_test.go"
+@coder "Refactor the HVAC handler to match the new schema — run tests after each change"
+```
+
+**Key Difference from Builder:** Codex is rigid and precise, follows instructions exactly. Builder (GPT 5.4) is flexible and creative. Use Coder when spec is clear; use Builder when exploring.
+
+---
+
+### NEW: Frontend (`frontend.md`)
+
+**Purpose:** UI implementation and vision-to-code. Accepts screenshots and images as input.
+
+**Model:** `opencode/kimi-k2.5` ($0.60/$3, 256K context)
+
+**Best For:**
+- Implementing UI components from designs or screenshots
+- React/Next.js/Vue component development
+- Figma comp to React conversion
+- Marketing sites and landing pages
+
+**Example Commands:**
+```bash
+@frontend "Implement this dashboard layout [attach screenshot]"
+@frontend "Create a responsive pricing page matching this Figma design"
+@frontend "Build a dark mode toggle component for the settings page"
+```
+
+---
+
+### NEW: Budget Builder (`budget-builder.md`)
+
+**Purpose:** Cost-effective implementation for well-defined tasks. ~80% quality of GPT 5.4 at ~30% cost.
+
+**Model:** `opencode/glm-5` ($1/$3.20, 200K context)
+
+**Best For:**
+- CRUD operations with existing patterns
+- Config changes, schema updates
+- Simple refactors with clear requirements
+- When budget is tight
+
+**Example Commands:**
+```bash
+@budget-builder "Add the 'status' field to the Property model and migration"
+@budget-builder "Create CRUD endpoints for the notification preferences"
+```
+
+**Limitation:** 200K context. Escalates to `@builder` if requirements are ambiguous.
 
 ---
 
@@ -204,7 +344,7 @@ labels: feature, security       <-- sets labels
 
 **Purpose:** Lightweight orchestrator for quick, low-risk feature work. Autonomously writes code, delegates testing to `@qa`, delegates review to `@reviewer`, and auto-commits when QA and review pass.
 
-**Model:** `google/gemini-2.5-flash-lite` (fast, cost-effective)
+**Model:** `opencode/gpt-5.4-mini` (fast, cost-effective)
 
 **Best For:**
 - Quick, clear-scope tasks
@@ -239,7 +379,7 @@ labels: feature, security       <-- sets labels
 
 **Purpose:** Senior implementation engineer with strong reasoning capabilities. Follows rigorous engineering principles (correctness, safety, clarity). Similar to Lead Developer but adds mandatory pre-flight checks and requires explicit user approval before commits.
 
-**Model:** `anthropic/claude-opus-4-6` (stronger reasoning, higher cost)
+**Model:** `opencode/gpt-5.4` (stronger reasoning, best Go/TS)
 
 **Best For:**
 - Complex, security-sensitive, or high-risk work
@@ -278,7 +418,7 @@ labels: feature, security       <-- sets labels
 | Aspect | Lead Dev | Engineer |
 |--------|----------|----------|
 | **Use when** | Quick, simple, low-risk | Complex, risky, security-critical |
-| **Model** | Lighter, faster (`gemini-2.5-flash-lite`) | Stronger reasoning (`claude-opus-4-6`) |
+| **Model** | Lighter, faster (`gpt-5.4-mini`) | Stronger reasoning (`gpt-5.4`) |
 | **Pre-flight** | None | Asks clarifying questions before planning |
 | **Approval** | Auto-commits after QA + review | Waits for explicit user approval |
 | **Philosophy** | SOP-driven workflow | Principles + decision framework + SOP |
@@ -607,25 +747,29 @@ To modify an agent's behavior, edit its `.md` file. Key sections:
 
 ## Best Practices
 
-1. **Not sure which agent to use?** Start with `@agent-advisor` - It will ask questions and recommend the best agent(s) for your task
+1. **Copilot first** — Quick questions, error explanations, small refactors → Use Copilot Chat (300 free premium reqs). Don't burn Zen credits on lightweight tasks.
 
-2. **Always let agents ask clarifying questions** - They're designed to gather context first
+2. **Not sure which agent to use?** Start with `@agent-advisor` — it routes based on model cost, task complexity, and cross-model review rules.
 
-3. **Use the right agent for the job:**
-   - Unsure which agent → `agent-advisor`
-   - Architecture questions → `planning-agent`
-   - Code quality → `reviewer`
-   - Security concerns → `security`
-   - Test coverage → `qa`
+3. **Cross-model review is mandatory** — Never review code with the same model that wrote it:
+   - GPT 5.4 wrote it → Review with Gemini 3.1 Pro (`@reviewer`)
+   - Gemini planned it → Review with GPT 5.4 (`@plan-reviewer`)
 
-4. **Chain agents for comprehensive review:**
+4. **Use the right cost tier:**
+   - Thinking/planning → `@architect` or `@planning-agent` (Gemini 3.1 Pro)
+   - Implementation → `@builder` (GPT 5.4) or `@coder` (GPT 5.3 Codex)
+   - Simple tasks → `@budget-builder` (GLM 5) or `@lead_dev` (GPT 5.4 Mini)
+   - Tests/docs → `@qa` (free) or `@docs_generator` (cheap)
+   - Git ops → `@commiter` (GPT 5.4 Nano)
+
+5. **Free models for grunt work** — Tests, docs, boilerplate use MiniMax M2.5 Free. Save paid tokens for reasoning and implementation.
+
+6. **Chain agents for comprehensive review:**
    ```bash
    @reviewer && @security && @qa
    ```
 
-5. **Save outputs for reference** - Agents save to `.opencode/{plans|reviewer|security}/`
-
-6. **Trust but verify** - Agents may have false positives; review their findings
+7. **Save outputs for reference** — Agents save to `.opencode/{plans|reviewer|security}/`
 
 ---
 

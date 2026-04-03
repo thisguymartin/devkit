@@ -41,6 +41,7 @@ zgo      # Go development
 ./scripts/killport.sh <port>
 ./scripts/brew-update.sh
 ./scripts/dev-cleanup.sh
+./scripts/opencode-budget.sh  # Show model pricing and budget allocation
 ```
 
 ## Configuration Linking
@@ -70,15 +71,30 @@ export DEVKIT_PATH="$HOME/path/to/devkit"
 
 AI agent and assistant configs are included but optional -- the core workflow (tools, layouts, shell configs) works without them.
 
-### OpenCode Agents
-OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax inside OpenCode:
-- `@agent-advisor` -- routes tasks to appropriate agents
-- `@planning-agent` -- system design and architecture
-- `@engineer` / `@lead_dev` -- implementation
-- `@reviewer` / `@plan-reviewer` -- code review
-- `@qa` / `@test_generator` -- testing
-- `@security` -- vulnerability scanning
-- `@linear` -- Linear project management integration
+### OpenCode Agents (Model Routing: OpenCode Zen + Copilot Pro)
+OpenCode agents in `opencode/aig_agents/` are invoked with `@agent-name` syntax inside OpenCode. Agents use a model routing strategy: expensive models for thinking, cheap for doing, free for grunt work.
+
+**Think Mode (Gemini 3.1 Pro -- read-only, planning):**
+- `@architect` / `@planning-agent` -- system design and architecture
+- `@plan-reviewer` -- reviews plans (GPT 5.4 for cross-model review)
+- `@reviewer` / `@security` -- code quality and security audits
+
+**Build Mode (GPT 5.4 family -- full access, implementation):**
+- `@builder` -- default implementation (GPT 5.4, Go/TS)
+- `@coder` -- autonomous test-fix loops (GPT 5.3 Codex)
+- `@frontend` -- UI/vision-to-code (Kimi K2.5)
+- `@budget-builder` -- cost-effective implementation (GLM 5)
+- `@engineer` / `@lead_dev` -- orchestrators with different approval levels
+
+**Bulk (Free/cheap models -- tests, docs, ops):**
+- `@qa` / `@test_generator` -- testing (MiniMax M2.5 Free)
+- `@docs_generator` -- documentation (Gemini 3 Flash)
+- `@commiter` -- git ops (GPT 5.4 Nano)
+- `@linear` -- project management (GPT 5.4 Mini)
+
+**Routing:** `@agent-advisor` helps choose the right agent based on task, cost tier, and cross-model review rules.
+
+See `opencode.json` for MCP server config and `opencode/aig_agents/README.md` for full agent docs.
 
 ### Rules & Commands
 Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically.

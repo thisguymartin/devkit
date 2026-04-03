@@ -1,7 +1,7 @@
 ---
 description: Documentation Specialist (Inline Logic + External Docs)
 mode: subagent
-model: google/gemini-3-flash-preview
+model: opencode/gemini-3-flash # Docs are cheap work — fast model
 temperature: 0.1
 tools:
   bash: true

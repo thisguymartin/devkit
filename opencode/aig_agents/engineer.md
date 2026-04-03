@@ -1,7 +1,7 @@
 ---
 description: Lead Developer & Orchestrator (Plans, Codes, Delegates)
 mode: primary
-model: anthropic/claude-opus-4-6 # Strong reasoning required to manage other agents
+model: opencode/gpt-5.4 # Strong reasoning + best Go/TS implementation
 temperature: 0.2
 tools:
   read: true
