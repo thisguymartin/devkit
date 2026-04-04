@@ -1,0 +1,1 @@
+../../skills/rules/personal-profile.md

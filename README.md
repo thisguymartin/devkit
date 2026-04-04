@@ -82,26 +82,23 @@ The repo includes configs for AI coding tools — these are entirely optional an
 | PR review | Copilot | Included | Assign Copilot as reviewer on PRs. |
 | Heavy agentic work | OpenCode + Zen | ~$90/mo | Architecture, multi-file refactors, autonomous coding. |
 
-### OpenCode Agents (14 agents)
+### OpenCode Agents (11 agents)
 
 | Agent | Specialty | Model | Cost | Invoke With |
 | :--- | :--- | :--- | :--- | :--- |
-| **Advisor** | Task routing & tool selection | Gemini 3 Flash | Budget | `@agent-advisor` |
-| **Architect** | System design & planning | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
-| **Plan Reviewer** | Architecture review | Gemini 3.1 Pro | $2/$12 | `@plan-reviewer` |
-| **Engineer** | Default builder (approval) | GPT 5.4 | $2.50/$15 | `@engineer` |
+| **Architect** | System design, task breakdown, plan review | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
+| **PM** | Linear integration | GPT 5.4 Mini | $0.75/$4.50 | `@linear` |
+| **Engineer** | Premium builder (approval) | Gemini 3.1 Pro | $2/$12 | `@engineer` |
 | **Coder** | Autonomous test-fix loops | GPT 5.3 Codex | $1.75/$14 | `@coder` |
-| **Frontend** | UI/vision-to-code | Kimi K2.5 | $0.60/$3 | `@frontend` |
-| **Lead Dev** | Quick tasks (auto-commit) | MiniMax Free | FREE | `@lead_dev` |
+| **Frontend** | UI/component development | Kimi K2.5 | $0.60/$3 | `@frontend` |
 | **Reviewer** | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
 | **Security** | Vulnerability scanning | Gemini 3.1 Pro | $2/$12 | `@security` |
-| **QA** | Test generation & execution | GPT 5.3 Codex | $1.75/$14 | `@qa` |
-| **Test Gen** | BDD/requirements-driven tests | GPT 5.3 Codex | $1.75/$14 | `@test_generator` |
-| **Docs** | Inline + external docs | Gemini 3 Flash | Budget | `@docs_generator` |
-| **PM** | Linear integration | Gemini 3 Flash | Budget | `@linear` |
-| **Committer** | Git automation | MiniMax Free | FREE | `@commiter` |
+| **QA** | Test generation, execution, BDD | GPT 5.4 Mini | $0.75/$4.50 | `@qa` |
+| **Docs** | Inline + external docs | Gemini 3 Flash | ~$0.50/$3 | `@docs_generator` |
+| **Pickle Think** | Free triage & rough planning | Big Pickle | FREE | `@pickle-think` |
+| **Pickle Implement** | Free low-risk code changes | Big Pickle | FREE | `@pickle-implement` |
 
-Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
+`planning-agent` now includes plan review mode, `qa` now handles requirements-driven / BDD test generation, and `pickle-think` / `pickle-implement` provide a free first-pass lane on Big Pickle. The default OpenCode build lane in [`opencode.json`](opencode.json) now uses `MiniMax M2.5 Free`; `@engineer` remains the premium escalation path on Gemini 3.1 Pro. Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
 
 For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://impeccable.style/):
 
