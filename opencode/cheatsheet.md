@@ -1,247 +1,171 @@
 # OpenCode Agent Cheatsheet
 
-Quick reference for all custom agents. Invoke subagents with `@agent-name` in any OpenCode session. Switch primary agents with `Tab`.
+Quick reference for the consolidated OpenCode agent set. Invoke subagents with `@agent-name` in any OpenCode session. Switch primary agents with `Tab`.
 
 ---
 
 ## Quick Routing
 
 ```
-Need help choosing?     →  @agent-advisor what agent should I use for X?
-Planning/architecture?  →  Switch to plan mode (Tab)
-Writing code?           →  Switch to engineer (Tab) or build mode
-Quick question?         →  Use Copilot Chat instead (save Zen credits)
-Tab-complete?           →  Use Copilot inline (unlimited, always on)
+Planning or reviewing a plan?  → @planning-agent
+Building backend/app logic?    → build mode (MiniMax Free) by default, @engineer for harder work, or @coder if tests define done
+Building UI/components?        → @frontend
+Writing or running tests?      → @qa
+Reviewing code quality?        → @reviewer
+Auditing security?             → @security
+Creating Linear work items?    → @linear
+Generating docs?               → @docs_generator
+Cheap throwaway edits?         → @pickle-implement or the configured small model
+Cheap brainstorming?           → @pickle-think
 ```
 
 ---
 
-## Primary Agents (Tab to switch)
+## Default Build Lane
 
-### engineer — Default Builder
-**Model:** GPT 5.4 | **Use for:** Day-to-day implementation, ambiguous tasks
+### build mode — Default Builder
+**Model:** MiniMax M2.5 Free | **Use for:** Day-to-day implementation when you want the cheapest default lane
 
 ```
-# Start coding directly — engineer is the default build agent
 Implement a REST endpoint for /api/properties that returns paginated results
-
-# Multi-file feature
-Add webhook support to the payment service. Create the handler, register the route, and add validation.
-
-# Refactor with context
-Refactor the HVAC controller to use the strategy pattern instead of the switch statement
-```
-
-### lead_dev — Orchestrator
-**Model:** MiniMax M2.5 Free | **Use for:** Quick tasks, auto-delegation to QA/reviewer/commit
-
-```
-# Full lifecycle — plans, codes, tests, reviews, commits
-Add a health check endpoint to the API server
-
-# Delegates automatically
-Fix the failing test in auth_test.go and commit when green
+Build webhook support for the payment service with validation and retries
+Refactor the HVAC controller to use the strategy pattern
 ```
 
 ---
 
-## Subagents (@mention to invoke)
+## Subagents
 
-### @agent-advisor — Task Router
-**Model:** Gemini 3 Flash (cheap) | **Use for:** Picking the right agent or tool
+### @engineer — Premium Builder
+**Model:** Gemini 3.1 Pro | **Use for:** Harder implementation, trade-offs, risky multi-file changes
 
 ```
-@agent-advisor I need to redesign the database schema and then implement it. What's the workflow?
-
-@agent-advisor Should I use Copilot or OpenCode for reviewing this PR?
-
-@agent-advisor I have a Figma mockup to implement and tests to write. Which agents and in what order?
+@engineer Implement a multi-step billing migration with rollback safety and monitoring
+@engineer Refactor the auth flow across services and preserve backward compatibility
 ```
 
-### @planning-agent — Systems Architect
-**Model:** Gemini 3.1 Pro (1M context) | **Use for:** Architecture, migration plans, system design
-**Saves plans to `.opencode/plans/`** — designs blueprints, does not write implementation code
+### @planning-agent — Architect + Plan Reviewer
+**Model:** Gemini 3.1 Pro | **Use for:** Architecture, migrations, task breakdown, plan review
 
 ```
 @planning-agent Design the database schema for a multi-tenant property management system
-
-@planning-agent Plan the migration from REST to gRPC for the internal services
-
-@planning-agent Break down the authentication flow for OAuth2 + PKCE. Include a Mermaid diagram.
-
-@planning-agent Review the current project structure and propose a module boundary refactor
+@planning-agent Break down the OAuth2 + PKCE authentication flow
+@planning-agent Review docs/migration-plan.md for gaps and risks
 ```
 
-### @plan-reviewer — Plan Critic
-**Model:** GPT 5.4 (cross-model from planner's Gemini) | **Use for:** Reviewing architecture plans before implementation
-**Requires a file path or pasted plan as input. Saves review to `.opencode/plans/`**
+### @linear — Project Management
+**Model:** GPT 5.4 Mini | **Use for:** Creating/managing Linear issues and projects with structured output
 
 ```
-@plan-reviewer Review the plan in docs/migration-plan.md for gaps and risks
-
-@plan-reviewer Critique this API design:
-  POST /api/orders → creates order + sends email + updates inventory
-
-@plan-reviewer Is this DynamoDB single-table design going to scale? See docs/schema.md
+@linear Create a project "Q2 Auth Rewrite" with issues from docs/auth-plan.md
+@linear Create an issue: Add rate limiting to public API endpoints
 ```
 
 ### @coder — Autonomous Test-Fix Loop
-**Model:** GPT 5.3 Codex | **Use for:** Clear specs with existing tests — implement until green
+**Model:** GPT 5.3 Codex | **Use for:** Clear specs with existing tests - implement until green
 
 ```
-@coder Implement the OrderService interface in internal/service/order.go. Run tests until all pass.
-
-@coder The spec is in docs/webhook-spec.md. Implement it and make all tests in webhook_test.go pass.
-
-@coder Refactor calculateDiscount to handle the new tier system. Existing tests must stay green.
+@coder Implement the OrderService interface in internal/service/order.go and run tests until all pass
+@coder Refactor calculateDiscount to handle the new tier system and keep all tests green
 ```
 
 ### @frontend — UI Specialist
-**Model:** Kimi K2.5 (vision) | **Use for:** Screenshots to code, responsive UI, component implementation
+**Model:** Kimi K2.5 | **Use for:** Cost-sensitive React/TS components, responsive UI, accessibility, screenshot-to-code
 
 ```
-@frontend Build a pricing page with 3 tiers: Free, Pro, Enterprise. Use Tailwind, make it responsive.
-
-@frontend Implement this design [paste screenshot]. Use React + Tailwind. Match the spacing exactly.
-
-@frontend Create a dashboard sidebar with collapsible navigation groups and active state indicators
-
-@frontend Add a dark mode toggle to the header. Persist preference in localStorage.
+@frontend Build a pricing page with 3 tiers using Tailwind and make it responsive
+@frontend Implement this design as a React component and preserve keyboard accessibility
 ```
 
 ### @reviewer — Code Review
 **Model:** Gemini 3.1 Pro | **Use for:** SRP, complexity, performance, readability review
-**Read-only** — critiques, does not fix
 
 ```
 @reviewer Review internal/handler/payment.go for clean code and performance issues
-
-@reviewer Check the new auth middleware for SRP violations and unnecessary complexity
-
-@reviewer Review the last 3 commits for code quality. Focus on the service layer changes.
+@reviewer Check the new auth middleware for unnecessary complexity
 ```
 
 ### @security — Security Audit
-**Model:** Gemini 3.1 Pro | **Use for:** OWASP top 10, injection, auth flaws, input validation
-**Read-only** — reports vulnerabilities, does not patch
+**Model:** Gemini 3.1 Pro | **Use for:** OWASP-style review, auth flaws, injection, validation gaps
 
 ```
-@security Audit the authentication flow in internal/auth/ for common vulnerabilities
-
-@security Check api/handlers/ for injection risks, especially the search endpoint
-
-@security Review the file upload handler for path traversal and size limit issues
-
-@security Full security scan of the payment processing module. Check for IDOR and SSRF.
+@security Audit the authentication flow in internal/auth/
+@security Review the file upload handler for traversal and size-limit issues
 ```
 
-### @qa — QA Automation
-**Model:** GPT 5.3 Codex | **Use for:** Writing comprehensive test suites with mocking
+### @qa — QA Automation + BDD
+**Model:** GPT 5.4 Mini | **Use for:** Test generation, execution, requirements-driven tests
 
 ```
-@qa Write unit tests for internal/service/order.go. Cover happy path, sad path, and edge cases.
-
-@qa Create integration tests for the webhook handler. Mock the external payment API.
-
-@qa The calculateShipping function has no tests. Write comprehensive coverage including boundary values.
-
-@qa Add property-based tests for the JSON serialization round-trip in the config package.
-```
-
-### @test_generator — Requirements-Driven Tests
-**Model:** GPT 5.3 Codex | **Use for:** Translating user requirements into BDD-style tests
-
-```
-@test_generator The user should not be able to place an order if their cart is empty or payment is declined
-
-@test_generator Requirements:
-  - Users can only edit their own profiles
-  - Admins can edit any profile
-  - Email changes require re-verification
-
-@test_generator Generate tests for the discount engine based on this spec: docs/discount-rules.md
+@qa Write unit tests for internal/service/order.go and cover edge cases
+@qa Users can only edit their own profiles; admins can edit any profile; email changes require reverification
 ```
 
 ### @docs_generator — Documentation
-**Model:** Gemini 3 Flash (cheap) | **Use for:** Inline comments, JSDoc, GoDoc, external docs
+**Model:** Gemini 3 Flash | **Use for:** Inline comments, JSDoc, GoDoc, external docs
 
 ```
-@docs_generator Add inline documentation to internal/service/. Focus on domain logic, skip obvious code.
-
-@docs_generator Generate GoDoc for all exported functions in the auth package
-
-@docs_generator mode=external source=internal/ target=docs/ — generate module-level documentation
-
-@docs_generator Add JSDoc to the React components in src/components/dashboard/
+@docs_generator Add inline documentation to internal/service/
+@docs_generator Generate module-level docs for src/components/
 ```
 
-### @commit — Git Automation
-**Model:** MiniMax M2.5 Free (free) | **Use for:** Semantic commits, branch protection
+### @pickle-think — Cheap Planner
+**Model:** Big Pickle | **Use for:** Cheap triage, rough plans, file discovery, disposable brainstorming
 
 ```
-@commit Stage and commit the changes to the auth handler with a descriptive message
-
-@commit Review the staged changes and create a conventional commit
-
-@commit Stage only the test files and commit separately from the implementation
+@pickle-think Map this feature into the smallest safe set of file changes
+@pickle-think Read src/auth and tell me the cheapest implementation path
 ```
 
-### @linear — Project Management
-**Model:** Gemini 3 Flash | **Use for:** Creating/managing Linear issues and projects
+### @pickle-implement — Cheap Implementer
+**Model:** Big Pickle | **Use for:** Low-risk code edits, boilerplate, config changes, first-pass implementation
 
 ```
-@linear Create an issue: "Add rate limiting to public API endpoints" with priority High
-
-@linear Create a project "Q2 Auth Rewrite" with 5 issues broken down from docs/auth-plan.md
-
-@linear What are the open issues in the current sprint?
+@pickle-implement Add a new env var to the config loader and docs
+@pickle-implement Rename this route handler and update its imports
 ```
 
 ---
 
 ## Common Workflows
 
-### New Feature (full pipeline)
+### New Feature
 ```
-1. @agent-advisor  → picks the right workflow
-2. @planning-agent → designs architecture
-3. @plan-reviewer  → critiques the plan
-4. engineer (Tab)  → implements the feature
-5. @qa             → writes and runs tests
-6. @reviewer       → code review (different model than builder)
-7. @security       → security audit
-8. @commit         → semantic commit
+1. @pickle-think   → cheap first-pass triage
+2. @planning-agent → architecture and task breakdown
+3. @linear         → create issues from the plan
+4. build mode      → implement by default
+5. @engineer       → escalate if the implementation is hard or high-risk
+6. @qa             → tests
+7. @reviewer       → code review
+8. @security       → audit if needed
 ```
 
-### Bug Fix (fast track)
+### Cheap First Pass
 ```
-1. engineer (Tab)  → investigate and fix
-2. @qa             → verify with tests
-3. @commit         → commit the fix
+1. @pickle-think   → map the smallest safe change
+2. @pickle-implement → make the low-risk edit
+3. Escalate if the task grows
 ```
 
 ### Spec-Driven Implementation
 ```
-1. @planning-agent → write the spec
-2. @test_generator → generate tests from spec
-3. @coder          → implement until tests pass (autonomous)
-4. @reviewer       → review the implementation
+1. @qa             → turn requirements into tests
+2. @coder          → implement until green
+3. @reviewer       → review the implementation
 ```
 
 ### Frontend Feature
 ```
-1. @frontend       → implement from design/screenshot
-2. @qa             → component tests
-3. @security       → XSS/input validation check
-4. @commit         → commit
+1. @frontend       → build from screenshot or description
+2. @qa             → add component tests
+3. @reviewer       → review accessibility and maintainability
 ```
 
-### Pre-Merge Review
+### Plan Review
 ```
-1. @reviewer       → code quality
-2. @security       → vulnerability scan
-3. @commit         → squash and commit
-   (or use Copilot PR review — free)
+1. @planning-agent → review existing plan in critic mode
+2. build mode or @engineer → implement once approved
 ```
 
 ---
@@ -250,9 +174,15 @@ Fix the failing test in auth_test.go and commit when green
 
 | Tier | Agents | Cost |
 |------|--------|------|
-| **Free** | commit, lead_dev | $0 |
-| **Cheap** | agent-advisor, docs_generator, linear | ~$0.50-3/1M tokens |
-| **Standard** | engineer, coder, frontend, qa, test_generator | ~$1.75-15/1M tokens |
-| **Premium** | planning-agent, reviewer, security (Gemini 3.1 Pro), plan-reviewer (GPT 5.4) | ~$2-15/1M tokens |
+| **Free** | pickle-think, pickle-implement | Free |
+| **Budget** | docs_generator | ~$0.50/$3 per 1M |
+| **Workhorse** | linear, qa | $0.75/$4.50 per 1M |
+| **Specialist** | coder | $1.75/$14 per 1M |
+| **Premium** | planning-agent, reviewer, security | $2/$12 per 1M |
+| **Premium Builder** | engineer | $2/$12 per 1M |
+| **Builder Default** | build mode | Free |
+| **Frontend** | frontend | $0.60/$3 per 1M |
 
-**Rule:** Free for grunt work. Cheap for docs/routing. Standard for building. Premium for thinking.
+**Rule:** keep the default build lane free, use `@engineer` only when the harder model is justified, and keep implementation/review on different model families where possible.
+
+**Free lane:** `small_model` is set to `opencode/big-pickle`, and `@pickle-think` / `@pickle-implement` make that lane explicit. Use them for low-risk edits, drafts, and disposable passes. If the change matters, escalate to `@coder`, `@qa`, or `engineer`.

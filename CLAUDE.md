@@ -10,14 +10,15 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 
 - `brewfile` -- Homebrew package manifest (install with `brew bundle --file=brewfile`)
 - `zellij/layouts/` -- KDL layout files for Zellij workspaces (api, database, debug, golang, migrations, monitor, node, pipeline, testrunner)
-- `opencode/aig_agents/` -- AI agent persona definitions for OpenCode (advisor, architect, engineer, QA, security, etc.)
-- `skills/rules/` -- Always-on coding standards (code quality, engineering principles, security, workflow)
+- `opencode/aig_agents/` -- OpenCode agent persona definitions (planning, engineer, coder, frontend, QA, reviewer, security, docs, Linear, pickle agents)
+- `skills/rules/` -- Always-on coding standards and personal preferences (code quality, engineering principles, security, workflow, personal profile)
 - `skills/commands/` -- On-demand slash commands (refactor-challenge, trace-debug, explain-code, etc.)
 - `skills/plane/` -- Plane.so project management commands
 - `.claude/rules/` -- Symlinked from `skills/rules/` (single source of truth)
 - `.cursor/rules/` -- Cursor rules (same standards, `.mdc` format)
 - `.config/` -- Tool configs: Ghostty terminal, git-delta, Starship prompt, shell enhancements (zoxide, fzf, eza aliases)
 - `sounds/` -- Notification sounds for Claude Code hooks (Navi "Hey! Listen!" from Zelda)
+- `AGENTS.md` -- Repo-local defaults for Codex and other coding agents
 - `opencode.json` -- OpenCode configuration (model routing, MCP servers, plugins)
 - `scripts/` -- Utility scripts (killport.sh, brew-update.sh, dev-cleanup.sh, opencode-setup.sh)
 
@@ -57,7 +58,7 @@ Configs are symlinked from this repo to `~/.config/` and `~/`:
 - `.config/shell/enhancements.zsh` -> sourced from `.zshrc`
 - `.claude/settings.json` -> `~/.claude/settings.json`
 - `opencode/aig_agents/` -> `~/.config/opencode/agents/` (via `scripts/opencode-setup.sh`)
-- `opencode.json` -> `~/.config/opencode/config.json` (via `scripts/opencode-setup.sh`)
+- `opencode.json` -> `~/.config/opencode/opencode.json` (via `scripts/opencode-setup.sh`)
 
 ### OpenCode + Copilot Pro Setup
 
@@ -91,21 +92,21 @@ AI agent and assistant configs are included but optional -- the core workflow (t
 - **Claude Code** -- Kept for work use; devkit includes Claude rules and settings for both tools
 
 ### OpenCode Agents
-14 specialized agents in `opencode/aig_agents/`, invoked with `@agent-name` syntax inside OpenCode:
-- `@agent-advisor` -- routes tasks to appropriate agents and tools
-- `@planning-agent` / `@plan-reviewer` -- architecture and plan review (Gemini 3.1 Pro)
-- `@engineer` -- default builder (GPT 5.4, requires approval)
-- `@coder` -- autonomous test-fix loops (GPT 5.3 Codex)
-- `@frontend` -- UI/vision-to-code (Kimi K2.5)
-- `@lead_dev` -- quick tasks, auto-commits (MiniMax Free)
+11 specialized agents in `opencode/aig_agents/`, invoked with `@agent-name` syntax inside OpenCode:
+- `@planning-agent` -- architecture, task breakdown, and plan review (Gemini 3.1 Pro)
+- `build` mode in `opencode.json` -- default free implementation lane (MiniMax M2.5 Free)
+- `@engineer` -- premium implementation/orchestration for harder work (Gemini 3.1 Pro)
+- `@coder` -- autonomous test-fix loops when the spec and tests are clear (GPT 5.3 Codex)
+- `@frontend` -- cost-sensitive UI and component work (Kimi K2.5)
 - `@reviewer` / `@security` -- code review and security audit (Gemini 3.1 Pro, cross-model)
-- `@qa` / `@test_generator` -- testing (GPT 5.3 Codex)
+- `@qa` -- test generation, execution, and BDD flows (GPT 5.4 Mini)
 - `@docs_generator` -- documentation (Gemini 3 Flash)
-- `@linear` -- Linear project management
-- `@commiter` -- git automation (MiniMax Free)
+- `@linear` -- Linear project management (GPT 5.4 Mini)
+- `@pickle-think` -- free triage and rough planning (Big Pickle)
+- `@pickle-implement` -- free low-risk code changes (Big Pickle)
 
 ### Rules & Commands
-Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically.
+Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically. Personal preferences live in `skills/rules/personal-profile.md`.
 
 On-demand commands in `skills/commands/` are invoked as slash commands:
 - `/refactor-challenge` and `/trace-debug` -- Socratic tutors (guide, don't fix)
@@ -126,6 +127,6 @@ Frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, etc.) are 
 - Shell scripts should use `set -e` and follow existing patterns in `scripts/`
 - `skills/rules/` is the single source of truth for always-on rules -- `.claude/rules/` files are symlinks. Edit files in `skills/rules/`, not `.claude/rules/`
 - `opencode/aig_agents/` is the single source of truth for OpenCode agents -- `~/.config/opencode/agents/` is a symlink
-- Agent model IDs use the `opencode/` prefix for Zen models (e.g., `opencode/gpt-5.4`)
+- Agent model IDs use the `opencode/` prefix for Zen models (e.g., `opencode/minimax-m2.5-free`, `opencode/gemini-3.1-pro`)
 - `skills/commands/` and `skills/plane/` are slash commands symlinked into `~/.claude/skills/`
 - `.cursor/rules/` is maintained separately in `.mdc` format -- update when modifying standards in `skills/`

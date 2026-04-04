@@ -4,108 +4,69 @@ disable: true
 
 # OpenCode AI Agents
 
-A collection of specialized AI subagents for software engineering workflows. Each agent is designed to be invoked independently — you orchestrate them as needed.
-
-All agents route through **OpenCode Zen** models optimized for cost and capability. See [Model Routing](#model-routing-reference) for the full breakdown.
+A consolidated 11-agent OpenCode setup tuned around Zen pricing and current model strengths. The routing goal is simple: keep the default build lane free with MiniMax M2.5 Free, reserve `@engineer` for premium implementation, and keep implementation/review on different model families where possible.
 
 ## Quick Reference
 
-| Agent | Purpose | Model | Cost | Invocation |
-|-------|---------|-------|------|------------|
-| `agent-advisor` | Help choose the right agent | Gemini 3 Flash | Budget | `@agent-advisor` |
-| `planning-agent` | Architecture design & task breakdown | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
-| `plan-reviewer` | Review architecture plans | Gemini 3.1 Pro | $2/$12 | `@plan-reviewer` |
-| `linear` | Create Linear projects/issues | Gemini 3 Flash | Budget | `@linear` |
-| `lead_dev` | Quick orchestrator (auto-commits) | MiniMax M2.5 Free | FREE | `@lead_dev` |
-| `engineer` | Senior builder (approval required) | GPT 5.4 | $2.50/$15 | `@engineer` |
+| Agent | Purpose | Model | Cost (per 1M in/out) | Invocation |
+|-------|---------|-------|----------------------|------------|
+| `planning-agent` | Architecture design, task breakdown, plan review | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
+| `linear` | Create Linear projects/issues | GPT 5.4 Mini | $0.75/$4.50 | `@linear` |
+| `engineer` | Premium senior builder (approval required) | Gemini 3.1 Pro | $2/$12 | `@engineer` |
 | `coder` | Autonomous test-fix loops | GPT 5.3 Codex | $1.75/$14 | `@coder` |
-| `frontend` | UI/vision-to-code | Kimi K2.5 | $0.60/$3 | `@frontend` |
+| `frontend` | UI/component development | Kimi K2.5 | $0.60/$3 | `@frontend` |
 | `reviewer` | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
 | `security` | Security audit | Gemini 3.1 Pro | $2/$12 | `@security` |
-| `qa` | Test generation & execution | GPT 5.3 Codex | $1.75/$14 | `@qa` |
-| `test_generator` | BDD/requirements-driven tests | GPT 5.3 Codex | $1.75/$14 | `@test_generator` |
-| `docs_generator` | Documentation (inline + external) | Gemini 3 Flash | Budget | `@docs_generator` |
-| `commiter` | Git commits with branch protection | MiniMax M2.5 Free | FREE | `@commiter` |
+| `qa` | Test generation, execution, BDD | GPT 5.4 Mini | $0.75/$4.50 | `@qa` |
+| `docs_generator` | Documentation (inline + external) | Gemini 3 Flash | ~$0.50/$3 | `@docs_generator` |
+| `pickle-think` | Free triage, brainstorming, rough planning | Big Pickle | Free | `@pickle-think` |
+| `pickle-implement` | Free low-risk implementation | Big Pickle | Free | `@pickle-implement` |
 
 ---
 
 ## Model Routing Reference
 
-**The rule:** Expensive model for thinking. Cheap model for doing. Free model for grunt work.
+**The rule:** cheap default build mode for routine implementation, premium models for planning/review and high-stakes engineering, smaller models for structured support work.
 
 | Tier | Model | Cost (per 1M tokens) | Agents |
-|------|-------|---------------------|--------|
-| **FREE** | MiniMax M2.5 Free | $0 | lead_dev, commiter |
-| **Budget** | Gemini 3 Flash | ~$0.50/$3 | docs_generator, linear, agent-advisor |
-| **Standard** | GPT 5.4 | $2.50/$15 | engineer |
-| **Standard** | GPT 5.3 Codex | $1.75/$14 | coder, qa, test_generator |
-| **Standard** | Kimi K2.5 | $0.60/$3 | frontend |
-| **Premium** | Gemini 3.1 Pro | $2/$12 | planning-agent, plan-reviewer, reviewer, security |
+|------|-------|----------------------|--------|
+| **Premium Review** | Gemini 3.1 Pro | $2/$12 | planning-agent, reviewer, security |
+| **Premium Builder** | Gemini 3.1 Pro | $2/$12 | engineer |
+| **Builder Default** | MiniMax M2.5 Free | Free | default build mode in `opencode.json` |
+| **Specialist** | GPT 5.3 Codex | $1.75/$14 | coder |
+| **Workhorse** | GPT 5.4 Mini | $0.75/$4.50 | qa, linear |
+| **Frontend** | Kimi K2.5 | $0.60/$3 | frontend |
+| **Budget** | Gemini 3 Flash | ~$0.50/$3 | docs_generator |
+| **Free** | Big Pickle | Free | pickle-think, pickle-implement |
 
-**Cross-model review rule:** Builder (GPT 5.4) and Reviewer (Gemini 3.1 Pro) always use different models. Never review code with the model that wrote it.
+**Cross-model review rule:** Code written by the default MiniMax M2.5 Free build lane should be reviewed with a different model family, typically Gemini 3.1 Pro. If `@engineer` is also using Gemini 3.1 Pro, avoid same-model self-review.
 
 ---
 
 ## Agent Details
 
-### 0. Agent Advisor (`agent-advisor.md`)
-
-**Purpose:** Meta-agent that helps you choose the right agent for your task. Also routes between OpenCode and Copilot Pro.
-
-**Best For:**
-- When you're unsure which agent to use
-- Understanding agent capabilities and costs
-- Getting workflow recommendations
-
-**Example Commands:**
-```bash
-@agent-advisor "I need to add user authentication"
-@agent-advisor "Should I use reviewer or security for this code?"
-@agent-advisor "I'm building a payment system, what's the process?"
-```
-
----
-
 ### 1. Planning Agent (`planning-agent.md`)
 
-**Model:** Gemini 3.1 Pro (1M context, best price-to-performance planner)
+**Model:** Gemini 3.1 Pro
 
-**Purpose:** Design system architecture, create flow diagrams, break down features into tasks.
-
-**Best For:**
-- Starting a new feature
-- Designing system architecture
-- Breaking down complex requirements
+**Purpose:** Architecture design, task breakdown, and plan review. Use the same agent for first-pass planning and critic-mode plan review.
 
 **Example Commands:**
 ```bash
 @planning-agent "Design a user authentication system with OAuth2 and JWT"
 @planning-agent "Plan the migration from REST to GraphQL for the user service"
+@planning-agent "Review ./plan-20260203-auth.md"
 ```
 
-**Expected Output:** `.opencode/plans/plan-YYYYMMDD-{feature}.md` with architecture diagrams, file structure, implementation steps, risks.
+**Outputs:**
+- New plans: `.opencode/plans/plan-YYYYMMDD-{feature}.md`
+- Reviews: `.opencode/plans/plan-review-YYYYMMDD-{feature}.md`
 
----
+### 2. Linear (`linear.md`)
 
-### 2. Plan Reviewer (`plan-reviewer.md`)
+**Model:** GPT 5.4 Mini
 
-**Model:** Gemini 3.1 Pro
-
-**Purpose:** Critically review architecture plans, identify gaps, suggest improvements.
-
-**Example Commands:**
-```bash
-@plan-reviewer "Review ./plan-20260203-auth.md"
-@plan-reviewer "Review the payment integration plan - we expect 10k transactions/day"
-```
-
----
-
-### 3. Linear Agent (`linear.md`)
-
-**Model:** Gemini 3 Flash (budget tier)
-
-**Purpose:** Create Linear projects and issues via MCP integration.
+**Purpose:** Create Linear projects and issues with better structured output than the cheaper routing tier, while still staying in the low-cost bucket.
 
 **Example Commands:**
 ```bash
@@ -113,36 +74,11 @@ All agents route through **OpenCode Zen** models optimized for cost and capabili
 @linear "Create issue: Fix login timeout - priority high, label: bug"
 ```
 
----
+### 3. Engineer (`engineer.md`)
 
-### 4. Lead Developer (`lead_dev.md`)
+**Model:** Gemini 3.1 Pro
 
-**Model:** MiniMax M2.5 Free (FREE)
-
-**Purpose:** Lightweight orchestrator for quick, low-risk feature work. Auto-commits after QA + review pass.
-
-**Best For:**
-- Quick, clear-scope tasks where auto-commit is fine
-- Trivial changes, config updates, error message fixes
-
-**Example Commands:**
-```bash
-@lead_dev "Add a config flag for dark mode"
-@lead_dev "Fix the typo in the API response field"
-```
-
----
-
-### 5. Engineer (`engineer.md`)
-
-**Model:** GPT 5.4 (default builder — fast iteration, idiomatic Go/TS)
-
-**Purpose:** Senior implementation engineer. Plans, codes, delegates testing and review, requires explicit approval before commits.
-
-**Best For:**
-- Complex, security-sensitive, or high-risk work
-- Tasks requiring design decisions and trade-off analysis
-- When you want approval before anything is committed
+**Purpose:** Premium implementation agent for ambiguous, risky, or architecture-sensitive work where stronger reasoning is worth the cost. Requires approval before commit-oriented actions.
 
 **Example Commands:**
 ```bash
@@ -150,54 +86,35 @@ All agents route through **OpenCode Zen** models optimized for cost and capabili
 @engineer "Build the authentication middleware with proper session handling"
 ```
 
----
+### 4. Coder (`coder.md`)
 
-### 6. Coder (`coder.md`)
+**Model:** GPT 5.3 Codex
 
-**Model:** GPT 5.3 Codex (RL-trained for agentic coding — precise, spec-driven)
-
-**Purpose:** Autonomous test-fix agent. Give it a spec and tests, it loops until green. No human intervention between iterations.
-
-**Best For:**
-- Well-defined tasks with existing tests
-- "Implement this and make all tests pass" scenarios
-- Autonomous implement → test → fix → repeat cycles
+**Purpose:** Autonomous spec-driven implementation with test-fix loops. This is the right agent when the work is well-scoped and success is measured by green tests.
 
 **Example Commands:**
 ```bash
 @coder "Implement the UserService interface and make all tests in user_test.go pass"
-@coder "Refactor the date parser — keep all existing tests green"
+@coder "Refactor the date parser - keep all existing tests green"
 ```
 
-**Key Difference from Engineer:** Coder is autonomous and spec-driven. Engineer requires approval and handles ambiguity. Use Coder when tests are clear. Use Engineer when you're still figuring out the approach.
+### 5. Frontend (`frontend.md`)
 
----
+**Model:** Kimi K2.5
 
-### 7. Frontend Developer (`frontend.md`)
-
-**Model:** Kimi K2.5 (vision-to-code specialist)
-
-**Purpose:** UI implementation from screenshots, mockups, or descriptions. Builds responsive, accessible components.
-
-**Best For:**
-- Screenshot/mockup to code
-- React/Vue/Svelte component development
-- Responsive design and accessibility
+**Purpose:** Cost-optimized UI and component implementation with emphasis on React/TypeScript, responsive behavior, accessibility, and production-ready structure.
 
 **Example Commands:**
 ```bash
 @frontend "Recreate this Figma comp as a React component with Tailwind"
 @frontend "Build a responsive dashboard layout with sidebar navigation"
-@frontend "Convert this screenshot to a styled landing page"
 ```
 
----
+### 6. Reviewer (`reviewer.md`)
 
-### 8. Code Reviewer (`reviewer.md`)
+**Model:** Gemini 3.1 Pro
 
-**Model:** Gemini 3.1 Pro (different model from builder — cross-model review)
-
-**Purpose:** Review code for quality, performance, and clean code standards.
+**Purpose:** Code quality review focused on structure, readability, maintainability, and performance.
 
 **Example Commands:**
 ```bash
@@ -207,13 +124,11 @@ All agents route through **OpenCode Zen** models optimized for cost and capabili
 
 **Reports saved to:** `.opencode/reviewer/`
 
----
-
-### 9. Security Auditor (`security.md`)
+### 7. Security (`security.md`)
 
 **Model:** Gemini 3.1 Pro
 
-**Purpose:** Audit code for security vulnerabilities. Supports Go, Python, TypeScript/JavaScript, .NET.
+**Purpose:** Security review for auth, validation, dependency risk, and common application vulnerabilities.
 
 **Example Commands:**
 ```bash
@@ -223,148 +138,122 @@ All agents route through **OpenCode Zen** models optimized for cost and capabili
 
 **Reports saved to:** `.opencode/security/`
 
----
+### 8. QA (`qa.md`)
 
-### 10. QA Automation (`qa.md`)
+**Model:** GPT 5.4 Mini
 
-**Model:** GPT 5.3 Codex (optimized for test-fix loops)
-
-**Purpose:** Generate and execute tests. Supports Jest, Vitest, Pytest, go test, xUnit, NUnit.
+**Purpose:** Test generation and execution across languages, plus BDD / requirements-driven test generation when the user starts from behavior instead of code.
 
 **Example Commands:**
 ```bash
 @qa "Write tests for ./src/utils/dateParser.ts"
 @qa "Test ./src/services/payment.ts - happy path + sad path + edge cases"
+@qa "Users can only edit their own profile; admins can edit any profile; email changes require reverification"
+```
+
+### 9. Docs Generator (`docs_generator.md`)
+
+**Model:** Gemini 3 Flash
+
+**Purpose:** Low-cost documentation generation for inline comments, API docs, and external markdown.
+
+**Example Commands:**
+```bash
+@docs_generator "Add inline documentation to internal/service/"
+@docs_generator "Generate GoDoc for all exported functions in the auth package"
+```
+
+### 10. Pickle Think (`pickle-think.md`)
+
+**Model:** Big Pickle
+
+**Purpose:** Cheap triage, brainstorming, rough plans, and first-pass decomposition before deciding whether stronger agents are needed.
+
+**Example Commands:**
+```bash
+@pickle-think "Sketch the safest way to add a feature flag to the billing flow"
+@pickle-think "Read this module and give me a cheap file-by-file plan"
+```
+
+### 11. Pickle Implement (`pickle-implement.md`)
+
+**Model:** Big Pickle
+
+**Purpose:** Free low-risk implementation for config changes, boilerplate, tiny refactors, and disposable first-pass code changes.
+
+**Example Commands:**
+```bash
+@pickle-implement "Rename this env var across the config layer"
+@pickle-implement "Add a placeholder endpoint and wire the route"
 ```
 
 ---
 
-### 11. Test Generator (`test_generator.md`)
+## Common Workflows
 
-**Model:** GPT 5.3 Codex
+### New Feature
 
-**Purpose:** BDD/requirements-driven test generation from natural language.
-
-**Example Commands:**
 ```bash
-@test_generator "Generate tests for a function that validates credit card numbers"
+1. @pickle-think "Draft a cheap first-pass plan"
+2. @planning-agent "Design [feature]"
+3. @linear "Create issues from [plan file]"
+4. Use default build mode for routine implementation, or `@engineer` when the change is hard or high-risk
+5. @qa "Write and run tests for [files]"
+6. @reviewer "Review [files]"
+7. @security "Audit [scope]"
 ```
 
----
+### Plan Review
 
-### 12. Documentation Generator (`docs_generator.md`)
-
-**Model:** Gemini 3 Flash (budget — docs are cheap work)
-
-**Purpose:** Add inline documentation or generate external docs.
-
-**Example Commands:**
 ```bash
-@docs_generator "Add logic comments to ./src/services/billing.ts"
-@docs_generator "mode=external source=./src/auth target=./docs/auth"
+1. @planning-agent "Review ./plan-YYYYMMDD-feature.md"
+2. Address critical findings
+3. Hand off to the default build mode or `@engineer` once approved
 ```
 
----
+### Cheap First Pass
 
-### 13. Git Committer (`commiter.md`)
-
-**Model:** MiniMax M2.5 Free (FREE — git ops don't need expensive models)
-
-**Purpose:** Manage git commits with branch protection and semantic messages.
-
-**Example Commands:**
 ```bash
-@commiter "Commit the authentication changes"
-@commiter "Commit all changes for the payment refactor"
+1. @pickle-think "Map the files and suggest the smallest change"
+2. @pickle-implement "Make the low-risk edit"
+3. Escalate to @qa, @coder, or engineer if the task grows
+```
+
+### Spec-Driven Implementation
+
+```bash
+1. @qa "Translate these requirements into tests"
+2. @coder "Implement the spec and make all tests pass"
+3. @reviewer "Review the implementation"
+```
+
+### Frontend Feature
+
+```bash
+1. @frontend "Build [component/page] from screenshot or description"
+2. @qa "Add component tests"
+3. @reviewer "Review for accessibility and maintainability"
 ```
 
 ---
 
 ## Implementation Agent Comparison
 
-| Criteria | `lead_dev` | `engineer` | `coder` | `frontend` |
-|----------|-----------|-----------|---------|-----------|
-| **Use when** | Quick, trivial, low-risk | Complex, needs approval | Spec + tests are clear | UI/visual work |
-| **Model** | MiniMax Free | GPT 5.4 | GPT 5.3 Codex | Kimi K2.5 |
-| **Cost** | FREE | $2.50/$15 | $1.75/$14 | $0.60/$3 |
-| **Approval** | Auto-commits | Requires approval | Autonomous loops | Full access |
-| **Pre-flight** | None | Asks clarifying questions | Asks for spec + tests | Asks for framework |
-| **Best at** | Config changes, typos | Design decisions, trade-offs | Test-fix cycles | Vision-to-code |
-| **Analogy** | "Just do it" | "Let's think this through" | "Give me the spec, I'll ship it" | "Show me the design" |
+| Criteria | `engineer` | `coder` | `frontend` |
+|----------|-----------|---------|-----------|
+| **Use when** | Highest-stakes implementation | Spec + tests are clear | UI/component work |
+| **Model** | Gemini 3.1 Pro | GPT 5.3 Codex | Kimi K2.5 |
+| **Cost** | $2/$12 | $1.75/$14 | $0.60/$3 |
+| **Approval** | Requires approval | Autonomous loops | Full access |
+| **Best at** | Hard trade-offs, risky implementation | Test-fix cycles | Responsive UI, a11y |
 
 ---
 
-## Common Workflows
+## Notes
 
-### Feature Development Flow
-```bash
-1. @planning-agent "Design user notification system"
-2. @plan-reviewer "Review ./plan-20260203-notifications.md"
-3. @linear "Create issues from plan"
-4. @engineer "Implement notification service"
-5. @qa "Write tests for notification service"
-6. @reviewer "Review notification service"
-7. @commiter "Commit notification service"
-```
-
-### Spec-Driven Implementation
-```bash
-1. @coder "Implement UserService - make all tests in user_test.go pass"
-# Coder loops autonomously until green, then reports
-```
-
-### Frontend Build
-```bash
-1. @frontend "Build dashboard from screenshot"
-2. @reviewer "Review for accessibility and performance"
-```
-
-### Quick Code Review
-```bash
-@reviewer "./src/newFeature.ts"
-@security "./src/newFeature.ts"
-```
-
-### Bug Fix Flow
-```bash
-1. @qa "Write test that reproduces bug #123"
-2. @coder "Fix the code to make the test pass"
-3. @security "Check the fix"
-4. @commiter "Fix: resolve race condition in session handler"
-```
-
----
-
-## Configuration
-
-All agents are configured as OpenCode subagents. Source of truth: `devkit/opencode/aig_agents/`.
-
-Symlinked to `~/.config/opencode/agents/` via `scripts/opencode-setup.sh`.
-
-### Agent Settings
-
-| Setting | Description |
-|---------|-------------|
-| `mode: subagent` | Runs as invokable subagent via `@agent-name` |
-| `mode: primary` | Runs as primary agent (Tab to switch) |
-| `model` | OpenCode Zen model to use |
-| `temperature` | Creativity vs determinism (lower = more deterministic) |
-| `tools` | Available tools (read, write, edit, bash) |
-
-### Customization
-
-To modify an agent's behavior, edit its `.md` file in `opencode/aig_agents/`. Key sections:
-- **Clarification Protocol** — Questions the agent asks before acting
-- **Standards/Checks** — What the agent evaluates
-- **Output Format** — How results are presented
-
----
-
-## Best Practices
-
-1. **Not sure which agent?** Start with `@agent-advisor`
-2. **Always let agents ask clarifying questions** — they're designed to gather context first
-3. **Cross-model review** — Builder and Reviewer are different models by design
-4. **Cost-conscious** — Use FREE agents for trivial work, save Zen credits for reasoning
-5. **Chain agents for comprehensive review:** `@reviewer` then `@security` then `@qa`
-6. **Trust but verify** — Agents may have false positives; review their findings
+- The system now uses **11 agents** across **7 models**.
+- The default build mode in `opencode.json` now uses `MiniMax M2.5 Free`; `@engineer` remains the premium escalation path on Gemini 3.1 Pro.
+- `planning-agent` absorbed plan review.
+- `qa` absorbed requirements-driven / BDD test generation.
+- `pickle-think` and `pickle-implement` provide a free first-pass lane on Big Pickle.
+- Git automation is no longer a dedicated OpenCode agent in this folder; handle commits in your normal toolchain.

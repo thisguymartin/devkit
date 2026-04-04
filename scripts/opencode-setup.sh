@@ -73,10 +73,11 @@ fi
 ln -sf "$DEVKIT/opencode/tui.json" ~/.config/opencode/tui.json
 echo "✓ Linked OpenCode TUI config → ~/.config/opencode/tui.json"
 
-# --- Cost-Awareness Rule ---
+# --- Repo Claude Rules ---
 if [ -d "$DEVKIT/.claude/rules" ]; then
     ln -sf "../../skills/rules/cost-awareness.md" "$DEVKIT/.claude/rules/cost-awareness.md" 2>/dev/null || true
-    echo "✓ Linked cost-awareness rule → .claude/rules/"
+    ln -sf "../../skills/rules/personal-profile.md" "$DEVKIT/.claude/rules/personal-profile.md" 2>/dev/null || true
+    echo "✓ Linked Claude rules → .claude/rules/"
 fi
 
 # --- Copilot CLI ---
