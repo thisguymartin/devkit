@@ -18,6 +18,7 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 - `.cursor/rules/` -- Cursor rules (same standards, `.mdc` format)
 - `.config/` -- Tool configs: Ghostty terminal, git-delta, Starship prompt, shell enhancements (zoxide, fzf, eza aliases)
 - `sounds/` -- Notification sounds for Claude Code hooks (Navi "Hey! Listen!" from Zelda)
+- `AGENTS.md` -- Repo-local defaults for Codex and other coding agents
 - `opencode.json` -- OpenCode configuration (model routing, MCP servers, plugins)
 - `scripts/` -- Utility scripts (killport.sh, brew-update.sh, dev-cleanup.sh, opencode-setup.sh)
 

@@ -18,6 +18,20 @@ GPT 5.3 Codex is RL-trained for agentic coding — precise, spec-driven, termina
 
 ---
 
+## Personal Defaults
+
+- Write in a direct, casual, first-person tone and keep responses brief
+- Default to Go and TypeScript unless the user says otherwise
+- Prefer CLI-first solutions and terminal-oriented workflows
+- For library, framework, SDK, or API guidance, verify current docs first with Context7, MCP, or the web when available
+- Produce production-ready code with error handling, context propagation, and logging when relevant
+- If architecture questions come up, reason from aggregates -> entities -> value objects -> domain events before folders or frameworks
+- Do not assume infra or deployment target; ask if it matters
+- Stay cost-conscious and privacy-conscious; do not suggest sending real customer data to third-party AI tools
+- When making factual claims or recommendations, give sources when available, add a confidence level, and label speculation clearly
+
+---
+
 ## Best Uses
 
 - Clear specifications with measurable acceptance criteria
