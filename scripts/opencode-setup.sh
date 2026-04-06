@@ -92,17 +92,6 @@ else
     echo "⚠ gh CLI not found. Install with: brew install gh"
 fi
 
-# --- Tokenscope Plugin ---
-if command -v npm &> /dev/null; then
-    if ! npm list -g @ramtinj95/opencode-tokenscope &> /dev/null; then
-        echo "Installing opencode-tokenscope plugin..."
-        npm install -g @ramtinj95/opencode-tokenscope 2>/dev/null || echo "⚠ Could not install tokenscope (npm required)"
-    else
-        echo "✓ opencode-tokenscope already installed"
-    fi
-else
-    echo "⚠ npm not found. Install Node.js first (nvm install --lts)"
-fi
 
 # --- Verify ---
 echo ""

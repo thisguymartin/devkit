@@ -208,27 +208,6 @@ else
     fail "gh CLI not found (should have been installed by brew bundle)"
 fi
 
-# ─── Tokenscope Plugin ────────────────────────────────────────────────────────
-
-step "OpenCode plugins"
-
-if command -v npm &> /dev/null; then
-    if $CHECK_ONLY; then
-        if npm list -g @ramtinj95/opencode-tokenscope &> /dev/null 2>&1; then
-            ok "opencode-tokenscope installed"
-        else
-            fail "opencode-tokenscope not installed"
-        fi
-    else
-        if ! npm list -g @ramtinj95/opencode-tokenscope &> /dev/null 2>&1; then
-            npm install -g @ramtinj95/opencode-tokenscope 2>/dev/null || warn "Could not install tokenscope"
-        else
-            ok "opencode-tokenscope already installed"
-        fi
-    fi
-else
-    warn "npm not found — skipping tokenscope (install Node.js first)"
-fi
 
 # ─── Verification Summary ────────────────────────────────────────────────────
 
