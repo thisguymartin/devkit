@@ -1,7 +1,7 @@
 ---
 description: Documentation Specialist (Inline Logic + External Docs)
 mode: subagent
-model: opencode/gemini-3-flash
+model: opencode/minimax-m2.5-free
 temperature: 0.1
 tools:
   bash: true

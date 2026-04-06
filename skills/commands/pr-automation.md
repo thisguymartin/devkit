@@ -24,33 +24,33 @@ description: Creates or updates pull requests with overview, change summary, and
 1. **Overview** - 2-3 sentence summary
 2. **Changes** - Bullet list of what changed in plain language
 3. **Files Modified** - Table of files with change type and description
-4. **Flow** - Rendered flow image via `pr-flow-gen` (only if applicable — new workflow, data pipeline, or API pattern)
+4. **Flow** - Rendered flow image via `mer-inkdrop` (only if applicable — new workflow, data pipeline, or API pattern)
 5. **Context** - Why and how (high-level approach, no code)
 6. **Testing** - How it was or should be tested
 
-## Flow Diagram Generation (pr-flow-gen)
+## Flow Diagram Generation (mer-inkdrop)
 
 When a PR includes a new workflow, data pipeline, or API pattern, generate a rendered image
-using the `pr-flow-gen` CLI instead of raw Mermaid code blocks.
+using the `mer-inkdrop` CLI from https://github.com/thisguymartin/mer-inkdrop
 
 ```bash
 # Generate markdown image tag (default) — embed this in the PR body
-pr-flow-gen -t "graph TD; A-->B" --markdown
+bun x mer-inkdrop "graph TD; A-->B"
 
 # Generate from a .mmd file
-pr-flow-gen -i flow.mmd --markdown
+bun x mer-inkdrop -i flow.mmd
 
 # Pipe from stdin
-echo "graph TD; A-->B" | pr-flow-gen
+echo "graph TD; A-->B" | bun x mer-inkdrop
 
 # Download image locally
-pr-flow-gen -t "graph TD; A-->B" -o flow.png
+bun x mer-inkdrop "graph TD; A-->B" -o flow.png
 
 # Get raw URL only
-pr-flow-gen -t "graph TD; A-->B" --url
+bun x mer-inkdrop "graph TD; A-->B" --url
 
 # Options: --format png|svg, --theme default|dark|forest|neutral, --alt "text"
-pr-flow-gen -i flow.mmd --theme dark --alt "Flow Diagram" --markdown
+bun x mer-inkdrop -i flow.mmd --theme dark --alt "Flow Diagram"
 ```
 
 Embed the output directly in the PR body under the **Flow** section.

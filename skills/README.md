@@ -33,6 +33,7 @@ Symlinked into `~/.claude/skills/commands/` — invoked as `/command-name`.
 | `/generate-flow` | Mermaid diagrams for any flow type |
 | `/complexity-check` | Big-O analysis, scaling bottlenecks |
 | `/pr-automation` | PR creation with structured descriptions |
+| `/cost-status` | Check OpenCode token usage and spending (runs `opencodebar status`) |
 
 ### Plane Commands
 

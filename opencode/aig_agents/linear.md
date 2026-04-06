@@ -1,7 +1,7 @@
 ---
 description: Linear Project & Issue Creator via MCP
 mode: subagent
-model: opencode/gpt-5.4-mini
+model: oopencode/minimax-m2.5
 temperature: 0.2
 # tools:
 #   mcp: linear

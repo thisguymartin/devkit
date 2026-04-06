@@ -321,7 +321,7 @@ Plane Issue: IDENTIFIER
 - [ ] [Each criterion from the Plane issue, checked if completed]
 ```
 
-If changes involve a new workflow, data pipeline, or API pattern, generate a flow diagram using `pr-flow-gen` and embed it under a **Flow** section.
+If changes involve a new workflow, data pipeline, or API pattern, generate a flow diagram using `mer-inkdrop` and embed it under a **Flow** section.
 
 Use a HEREDOC to pass the body:
 ```bash

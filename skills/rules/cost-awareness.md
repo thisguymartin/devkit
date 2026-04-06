@@ -9,7 +9,7 @@ Expensive model for thinking. Cheap model for doing. Free model for grunt work. 
 | Tier | Models | Cost (per 1M tokens) | Use For |
 |------|--------|---------------------|---------|
 | **FREE** | MiniMax M2.5 Free, Qwen3.6 Plus Free, Big Pickle | $0 | Tests, docs, boilerplate, comments, changelogs |
-| **Budget** | Gemini 3 Flash, GLM 5, GPT 5.4 Nano | $0.20-$3 | Docs, project management, quick utilities |
+| **Budget** | MiniMax M2.5, GLM 5, GPT 5.4 Nano | $0.20-$3 | Docs, project management, quick utilities |
 | **Builder** | MiniMax M2.5 Free | $0 | Default implementation when cost matters most |
 | **Specialist** | GPT 5.3 Codex | $1.75/$14 | Autonomous coding loops, spec-driven implementation |
 | **Workhorse** | GPT 5.4 Mini | $0.75/$4.50 | QA, project management, structured support tasks |

@@ -186,3 +186,22 @@ Refactor the HVAC controller to use the strategy pattern
 **Rule:** keep the default build lane free, use `@engineer` only when the harder model is justified, and keep implementation/review on different model families where possible.
 
 **Free lane:** `small_model` is set to `opencode/big-pickle`, and `@pickle-think` / `@pickle-implement` make that lane explicit. Use them for low-risk edits, drafts, and disposable passes. If the change matters, escalate to `@coder`, `@qa`, or `engineer`.
+
+---
+
+## Monitoring Costs
+
+Track spending in real-time:
+
+```bash
+# Shell alias (already in ~/.zshrc)
+cost
+
+# Or directly
+opencodebar status
+
+# OpenCode command
+/cost
+```
+
+Shows per-provider breakdown: quota usage % and dollars spent. Example: "~$6.14 spent on OpenCode Zen".

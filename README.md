@@ -106,6 +106,23 @@ For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/fron
 npx skills add pbakaus/impeccable
 ```
 
+### Cost Tracking
+
+Track OpenCode spending with [opencode-bar](https://github.com/thisguymartin/opencode-bar):
+
+```bash
+# Install
+brew install thisguymartin/tap/opencode-bar
+
+# Check status (already aliased as `cost` in ~/.zshrc)
+cost
+
+# Or use OpenCode command
+/cost
+```
+
+Shows per-provider usage and spend. Example output: "~$6.14 spent on OpenCode Zen".
+
 ## Open-Source Tools of Interest
 
 Tools and projects from the community that complement this workflow:
