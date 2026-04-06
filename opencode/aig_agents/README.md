@@ -11,13 +11,13 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 | Agent | Purpose | Model | Cost (per 1M in/out) | Invocation |
 |-------|---------|-------|----------------------|------------|
 | `planning-agent` | Architecture design, task breakdown, plan review | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
-| `linear` | Create Linear projects/issues | GPT-4o-mini (OpenAI) | $0.15/$0.60 | `@linear` |
+| `linear` | Create Linear projects/issues | GPT-4.1-mini (OpenAI) | $0.40/$1.60 | `@linear` |
 | `engineer` | Premium senior builder (approval required) | Gemini 3.1 Pro | $2/$12 | `@engineer` |
-| `coder` | Autonomous test-fix loops | GPT-4o (OpenAI) | $2.50/$10 | `@coder` |
+| `coder` | Autonomous test-fix loops | GPT-4.1 (OpenAI) | $2/$8 | `@coder` |
 | `frontend` | UI/component development | Kimi K2.5 | $0.60/$3 | `@frontend` |
 | `reviewer` | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
 | `security` | Security audit | Gemini 3.1 Pro | $2/$12 | `@security` |
-| `qa` | Test generation, execution, BDD | GPT-4o-mini (OpenAI) | $0.15/$0.60 | `@qa` |
+| `qa` | Test generation, execution, BDD | GPT-4.1-mini (OpenAI) | $0.40/$1.60 | `@qa` |
 | `docs_generator` | Documentation (inline + external) | Gemini 3 Flash | ~$0.50/$3 | `@docs_generator` |
 | `pickle-think` | Free triage, brainstorming, rough planning | Big Pickle | Free | `@pickle-think` |
 | `pickle-implement` | Free low-risk implementation | Big Pickle | Free | `@pickle-implement` |
@@ -33,8 +33,8 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 | **Premium Review** | Gemini 3.1 Pro | $2/$12 | planning-agent, reviewer, security |
 | **Premium Builder** | Gemini 3.1 Pro | $2/$12 | engineer |
 | **Builder Default** | MiniMax M2.5 Free | Free | default build mode in `opencode.json` |
-| **Specialist** | GPT-4o (OpenAI) | $2.50/$10 | coder |
-| **Workhorse** | GPT-4o-mini (OpenAI) | $0.15/$0.60 | qa, linear |
+| **Specialist** | GPT-4.1 (OpenAI) | $2/$8 | coder |
+| **Workhorse** | GPT-4.1-mini (OpenAI) | $0.40/$1.60 | qa, linear |
 | **Frontend** | Kimi K2.5 | $0.60/$3 | frontend |
 | **Budget** | Gemini 3 Flash | ~$0.50/$3 | docs_generator |
 | **Free** | Big Pickle | Free | pickle-think, pickle-implement |
@@ -64,7 +64,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ### 2. Linear (`linear.md`)
 
-**Model:** GPT-4o-mini (OpenAI API)
+**Model:** GPT-4.1-mini (OpenAI API)
 
 **Purpose:** Create Linear projects and issues with better structured output than the cheaper routing tier, while still staying in the low-cost bucket.
 
@@ -88,7 +88,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ### 4. Coder (`coder.md`)
 
-**Model:** GPT-4o (OpenAI API)
+**Model:** GPT-4.1 (OpenAI API)
 
 **Purpose:** Autonomous spec-driven implementation with test-fix loops. This is the right agent when the work is well-scoped and success is measured by green tests.
 
@@ -140,7 +140,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ### 8. QA (`qa.md`)
 
-**Model:** GPT-4o-mini (OpenAI API)
+**Model:** GPT-4.1-mini (OpenAI API)
 
 **Purpose:** Test generation and execution across languages, plus BDD / requirements-driven test generation when the user starts from behavior instead of code.
 
@@ -242,8 +242,8 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 | Criteria | `engineer` | `coder` | `frontend` |
 |----------|-----------|---------|-----------|
 | **Use when** | Highest-stakes implementation | Spec + tests are clear | UI/component work |
-| **Model** | Gemini 3.1 Pro | GPT-4o (OpenAI) | Kimi K2.5 |
-| **Cost** | $2/$12 | $2.50/$10 | $0.60/$3 |
+| **Model** | Gemini 3.1 Pro | GPT-4.1 (OpenAI) | Kimi K2.5 |
+| **Cost** | $2/$12 | $2/$8 | $0.60/$3 |
 | **Approval** | Requires approval | Autonomous loops | Full access |
 | **Best at** | Hard trade-offs, risky implementation | Test-fix cycles | Responsive UI, a11y |
 

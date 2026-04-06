@@ -87,13 +87,13 @@ The repo includes configs for AI coding tools — these are entirely optional an
 | Agent | Specialty | Model | Cost | Invoke With |
 | :--- | :--- | :--- | :--- | :--- |
 | **Architect** | System design, task breakdown, plan review | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
-| **PM** | Linear integration | GPT-4o-mini (OpenAI) | $0.15/$0.60 | `@linear` |
+| **PM** | Linear integration | GPT-4.1-mini (OpenAI) | $0.40/$1.60 | `@linear` |
 | **Engineer** | Premium builder (approval) | Gemini 3.1 Pro | $2/$12 | `@engineer` |
-| **Coder** | Autonomous test-fix loops | GPT-4o (OpenAI) | $2.50/$10 | `@coder` |
+| **Coder** | Autonomous test-fix loops | GPT-4.1 (OpenAI) | $2/$8 | `@coder` |
 | **Frontend** | UI/component development | Kimi K2.5 | $0.60/$3 | `@frontend` |
 | **Reviewer** | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
 | **Security** | Vulnerability scanning | Gemini 3.1 Pro | $2/$12 | `@security` |
-| **QA** | Test generation, execution, BDD | GPT-4o-mini (OpenAI) | $0.15/$0.60 | `@qa` |
+| **QA** | Test generation, execution, BDD | GPT-4.1-mini (OpenAI) | $0.40/$1.60 | `@qa` |
 | **Docs** | Inline + external docs | Gemini 3 Flash | ~$0.50/$3 | `@docs_generator` |
 | **Pickle Think** | Free triage & rough planning | Big Pickle | FREE | `@pickle-think` |
 | **Pickle Implement** | Free low-risk code changes | Big Pickle | FREE | `@pickle-implement` |
