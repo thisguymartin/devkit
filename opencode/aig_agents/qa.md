@@ -1,7 +1,7 @@
 ---
 description: QA Automation Architect (Multi-Language Test Coverage)
 mode: subagent
-model: opencode/gpt-5.4-mini
+model: gpt-4o-mini
 temperature: 0.1
 tools:
   bash: true
