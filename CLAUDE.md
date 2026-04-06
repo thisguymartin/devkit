@@ -4,12 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A portable, reproducible terminal development environment (devkit). Not a software project with build/test/lint cycles -- it's a collection of dotfiles, Zellij layouts, shell scripts, Homebrew package manifests, tool configs, and optionally AI agent/assistant configs. The goal is to replicate the same workflow on any machine: clone, install, symlink, and go. All tools are installed via Homebrew and orchestrated through Zellij terminal multiplexer.
+A portable, reproducible terminal development environment (devkit). Not a software project with build/test/lint cycles -- it's a collection of dotfiles, shell scripts, Homebrew package manifests, tool configs, and optionally AI agent/assistant configs. The goal is to replicate the same workflow on any machine: clone, install, symlink, and go. All tools are installed via Homebrew.
 
 ## Repository Structure
 
 - `brewfile` -- Homebrew package manifest (install with `brew bundle --file=brewfile`)
-- `zellij/layouts/` -- KDL layout files for Zellij workspaces (api, database, debug, golang, migrations, monitor, node, pipeline, testrunner)
 - `opencode/aig_agents/` -- OpenCode agent persona definitions (planning, engineer, coder, frontend, QA, reviewer, security, docs, Linear, pickle agents)
 - `skills/rules/` -- Always-on coding standards and personal preferences (code quality, engineering principles, security, workflow, personal profile)
 - `skills/commands/` -- On-demand slash commands (refactor-challenge, trace-debug, explain-code, etc.)
@@ -28,17 +27,6 @@ A portable, reproducible terminal development environment (devkit). Not a softwa
 # Install/update tools
 brew bundle --file=brewfile
 
-# Zellij layouts
-zdebug   # Debug workspace with log stacking
-ztest    # Test runner (unit/integration/E2E)
-zmig     # Migrations (runner, DB console, queries, seed data)
-zapi     # API development (server, request logs, test, schema)
-zpipe    # Pipeline (build, deploy, rollback, container logs)
-zmon     # Monitor (btop + logs + Docker)
-zdb      # Database (PostgreSQL + Redis)
-znode    # Node.js development
-zgo      # Go development
-
 # Utilities
 ./scripts/killport.sh <port>
 ./scripts/brew-update.sh
@@ -52,7 +40,6 @@ oc           # Launch OpenCode (alias)
 ## Configuration Linking
 
 Configs are symlinked from this repo to `~/.config/` and `~/`:
-- `zellij/` -> `~/.config/zellij/`
 - `.config/ghostty/config` -> `~/.config/ghostty/config`
 - `.config/git/delta.gitconfig` -> included via `git config --global include.path`
 - `.config/shell/enhancements.zsh` -> sourced from `.zshrc`
@@ -122,7 +109,6 @@ Frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, etc.) are 
 
 ## When Editing This Repo
 
-- Layout files use KDL format (`*.kdl`) -- Zellij's configuration language
 - Agent configs are markdown files with persona/behavior instructions
 - Shell scripts should use `set -e` and follow existing patterns in `scripts/`
 - `skills/rules/` is the single source of truth for always-on rules -- `.claude/rules/` files are symlinks. Edit files in `skills/rules/`, not `.claude/rules/`

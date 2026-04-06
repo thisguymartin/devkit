@@ -47,17 +47,6 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# --- Zellij layout aliases ---
-alias zmon='zellij --layout ~/devkit/zellij/layouts/monitor.kdl'
-alias zdb='zellij --layout ~/devkit/zellij/layouts/database.kdl'
-alias ztest='zellij --layout ~/devkit/zellij/layouts/testrunner.kdl'
-alias zmig='zellij --layout ~/devkit/zellij/layouts/migrations.kdl'
-alias zpipe='zellij --layout ~/devkit/zellij/layouts/pipeline.kdl'
-alias zapi='zellij --layout ~/devkit/zellij/layouts/api.kdl'
-alias zdebug='zellij --layout ~/devkit/zellij/layouts/debug.kdl'
-alias znode='zellij --layout ~/devkit/zellij/layouts/node.kdl'
-alias zgo='zellij --layout ~/devkit/zellij/layouts/golang.kdl'
-
 # --- OpenCode aliases ---
 if command -v opencode &> /dev/null; then
     alias oc='opencode'

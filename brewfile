@@ -2,7 +2,6 @@
 brew "starship"  # The prompt
 brew "yazi"      # File manager
 brew "lazygit"   # Git TUI (optional, falls back to shell)
-brew "zellij"    # Terminal multiplexer (required)
 brew "gemini-cli" # Gemini CLI (optional, Google AI agent)
 brew "git"       # Git (you probably already have this)
 brew "btop"      # System monitor

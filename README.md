@@ -8,14 +8,13 @@
 
 A single repo that carries your complete development workflow from machine to machine. Every package, shell config, terminal layout, and tool preference lives here. Clone it on a fresh Mac, run the setup, and you're productive in minutes — identical environment everywhere.
 
-It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for different workflows (testing, migrations, API work, debugging, CI/CD), modern replacements for standard Unix tools, shell enhancements, and optionally AI coding agents and assistant configs. For AI-powered worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
+It includes curated CLI tools installed via Homebrew, modern replacements for standard Unix tools, shell enhancements, and optionally AI coding agents and assistant configs. For AI-powered worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
 
 ## Core Stack
 
 | Tool | Purpose | Why |
 | :--- | :--- | :--- |
 | **Ghostty** | Terminal | GPU-accelerated, fast, Catppuccin themed. |
-| **Zellij** | Window Manager | Splits terminal into multi-tab workspaces with stacked/floating panes. |
 | **LazyGit** | Git Client | The fastest way to stage, diff, commit, and push. |
 | **Yazi** | File Manager | Visual file browsing with previews — faster than Finder. |
 | **Starship** | Prompt | Git branch, status, errors, and language versions at a glance. |
@@ -35,39 +34,6 @@ It includes curated CLI tools installed via Homebrew, 9 Zellij layouts for diffe
 | **jq** | — | Parse, filter, and transform JSON from the command line. |
 | **tldr** | `man` | Practical examples instead of 2000 lines. |
 | **dust** | `du` | Visual breakdown of what's eating disk space. |
-
-## Zellij Layouts
-
-9 purpose-built layouts using stacked panes, multi-tab workflows, and floating panes. For AI agent + worktree workspaces, see [Grove](https://github.com/thisguymartin/grove).
-
-### General Purpose
-
-| Command | Layout | What It's For |
-| :--- | :--- | :--- |
-| `zdebug` | Debug | Log stacking, process inspector, floating notes, reproduce/fix tabs |
-
-### Workflow-Specific
-
-| Command | Layout | What It's For |
-| :--- | :--- | :--- |
-| `ztest` | Test Runner | Stacked test suites (unit/integration/E2E) + watch mode |
-| `zmig` | Migrations | Migration runner, DB console, queries, seed data |
-| `zapi` | API Dev | Server + request logs + test + schema |
-| `zpipe` | Pipeline | Build, deploy, rollback, container logs, health checks |
-
-### Infrastructure
-
-| Command | Layout | What It's For |
-| :--- | :--- | :--- |
-| `zmon` | Monitor | btop + logs + Docker |
-| `zdb` | Database | PostgreSQL + Redis |
-
-### Language-Specific (commands start suspended — press ENTER to run)
-
-| Command | Layout | What It's For |
-| :--- | :--- | :--- |
-| `znode` | Node.js | Dev server, vitest, lint, Drizzle migrations/studio, Docker |
-| `zgo` | Go | go run, go test, vet, benchmarks, modules, Docker |
 
 ## AI Tools (Optional)
 
@@ -161,10 +127,6 @@ brew bundle --file=brewfile
 **3. Link configurations**
 
 ```bash
-# Zellij layouts
-mkdir -p ~/.config/zellij
-ln -sf ~/devkit/zellij/layouts ~/.config/zellij/layouts
-
 # Ghostty config
 mkdir -p ~/.config/ghostty
 ln -sf ~/devkit/.config/ghostty/config ~/.config/ghostty/config
@@ -172,7 +134,7 @@ ln -sf ~/devkit/.config/ghostty/config ~/.config/ghostty/config
 # Git delta (syntax-highlighted diffs)
 git config --global include.path ~/devkit/.config/git/delta.gitconfig
 
-# Shell enhancements (zoxide, fzf+fd, eza aliases, layout aliases)
+# Shell enhancements (zoxide, fzf+fd, eza aliases)
 echo 'source ~/devkit/.config/shell/enhancements.zsh' >> ~/.zshrc
 ```
 
@@ -190,12 +152,4 @@ source ~/.zshrc
 
 ## Usage
 
-Pick a layout and go:
-
-```bash
-cd ~/my-api && znode   # Node.js project with pre-wired commands
-cd ~/my-svc && zgo     # Go project with pre-wired commands
-zdebug           # Debug workspace with log stacking
-```
-
-All tools are keyboard-driven. Layout aliases are defined in `.config/shell/enhancements.zsh`.
+All tools are keyboard-driven and available in your shell after sourcing enhancements.

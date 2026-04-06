@@ -88,12 +88,6 @@ else
     fi
 fi
 
-# ─── Zellij ───────────────────────────────────────────────────────────────────
-
-step "Zellij layouts"
-
-link_safe "$DEVKIT/zellij" "$HOME/.config/zellij" "Zellij config"
-
 # ─── Ghostty ──────────────────────────────────────────────────────────────────
 
 step "Ghostty terminal"
@@ -240,7 +234,7 @@ fi
 
 step "Verification"
 
-TOOLS=("opencode" "gh" "zellij" "starship" "delta" "zoxide" "fzf" "fd" "bat" "eza")
+TOOLS=("opencode" "gh" "starship" "delta" "zoxide" "fzf" "fd" "bat" "eza")
 
 for tool in "${TOOLS[@]}"; do
     if command -v "$tool" &> /dev/null; then
