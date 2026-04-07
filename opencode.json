@@ -12,7 +12,7 @@
       }
     },
     "plan": {
-      "model": "opencode/gemini-3.1-pro",
+      "model": "google/gemini-3.1-pro-preview",
       "tools": {
         "write": false,
         "edit": false,

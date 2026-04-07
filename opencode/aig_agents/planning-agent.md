@@ -1,7 +1,7 @@
 ---
 description: Software Architect - Planning & Flow Architecture
 mode: subagent
-model: opencode/gemini-3.1-pro
+model: google/gemini-3.1-pro-preview
 temperature: 0.3
 tools:
   write: true

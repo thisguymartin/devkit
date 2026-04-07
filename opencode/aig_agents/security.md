@@ -1,7 +1,7 @@
 ---
 description: Security Auditor (Go, Python, TypeScript, .NET Focus)
 mode: subagent
-model: opencode/gemini-3.1-pro
+model: google/gemini-3.1-pro-preview
 temperature: 0.1
 tools:
   bash: true

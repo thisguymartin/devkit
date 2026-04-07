@@ -1,7 +1,7 @@
 ---
 description: Premium Lead Engineer & Orchestrator (Plans, Codes, Verifies, Escalates)
 mode: primary
-model: opencode/gemini-3.1-pro
+model: 	google/gemini-3.1-pro-preview
 temperature: 0.2
 tools:
   read: true
