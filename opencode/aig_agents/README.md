@@ -4,21 +4,24 @@ disable: true
 
 # OpenCode AI Agents
 
-A consolidated 11-agent OpenCode setup tuned around Zen pricing and current model strengths. The routing goal is simple: keep the default build lane free with MiniMax M2.5 Free, reserve `@engineer` for premium implementation, and keep implementation/review on different model families where possible.
+A consolidated 14-agent OpenCode setup tuned around current model strengths with a split between cheap MiniMax defaults, GPT/Codex execution lanes, and Gemini deep engineering. The routing goal is simple: keep the cheap MiniMax lanes for low-cost support work, use dedicated GPT/Codex lanes when you want stronger execution, use Gemini 3.1 Pro when the hard part is architectural judgment, and keep implementation/review on different model families where possible.
 
 ## Quick Reference
 
 | Agent | Purpose | Model | Cost (per 1M in/out) | Invocation |
 |-------|---------|-------|----------------------|------------|
 | `planning-agent` | Architecture design, task breakdown, plan review | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
-| `linear` | Create Linear projects/issues | GPT 5.4 Mini | $0.75/$4.50 | `@linear` |
-| `engineer` | Premium senior builder (approval required) | Gemini 3.1 Pro | $2/$12 | `@engineer` |
+| `linear` | Create Linear projects/issues | MiniMax M2.5 | ~$0.20-$3 | `@linear` |
+| `engineer` | OpenAI execution engineer | GPT 5.3 Codex | $1.75/$14 | `@engineer` |
+| `shipwright` | Unique primary Codex build lane | GPT 5.3 Codex | $1.75/$14 | `@shipwright` |
+| `principal-engineer` | Deep engineering thinking, architecture, technical direction | Gemini 3.1 Pro | $2/$12 | `@principal-engineer` |
 | `coder` | Autonomous test-fix loops | GPT 5.3 Codex | $1.75/$14 | `@coder` |
 | `frontend` | UI/component development | Kimi K2.5 | $0.60/$3 | `@frontend` |
-| `reviewer` | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
+| `reviewer` | Code quality review | GPT 5.4 Mini | $0.75/$4.50 | `@reviewer` |
+| `senior-reviewer` | GPT-family backup review lane | GPT-5 mini | $0.25/$2 | `@senior-reviewer` |
 | `security` | Security audit | Gemini 3.1 Pro | $2/$12 | `@security` |
 | `qa` | Test generation, execution, BDD | GPT 5.4 Mini | $0.75/$4.50 | `@qa` |
-| `docs_generator` | Documentation (inline + external) | Gemini 3 Flash | ~$0.50/$3 | `@docs_generator` |
+| `docs_generator` | Documentation (inline + external) | MiniMax M2.5 Free | $0 | `@docs_generator` |
 | `pickle-think` | Free triage, brainstorming, rough planning | Big Pickle | Free | `@pickle-think` |
 | `pickle-implement` | Free low-risk implementation | Big Pickle | Free | `@pickle-implement` |
 
@@ -26,20 +29,34 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ## Model Routing Reference
 
-**The rule:** cheap default build mode for routine implementation, premium models for planning/review and high-stakes engineering, smaller models for structured support work.
+**The rule:** OpenAI-first for execution, Gemini-first for deep engineering judgment, and different model families for implementation vs review whenever possible.
 
 | Tier | Model | Cost (per 1M tokens) | Agents |
 |------|-------|----------------------|--------|
-| **Premium Review** | Gemini 3.1 Pro | $2/$12 | planning-agent, reviewer, security |
-| **Premium Builder** | Gemini 3.1 Pro | $2/$12 | engineer |
-| **Builder Default** | MiniMax M2.5 Free | Free | default build mode in `opencode.json` |
-| **Specialist** | GPT 5.3 Codex | $1.75/$14 | coder |
-| **Workhorse** | GPT 5.4 Mini | $0.75/$4.50 | qa, linear |
+| **Premium Review** | Gemini 3.1 Pro | $2/$12 | planning-agent, security |
+| **Premium Builder** | Gemini 3.1 Pro | $2/$12 | principal-engineer |
+| **Builder Default** | MiniMax M2.5 | ~$0.20-$3 | default build mode in `opencode.json`, linear |
+| **Specialist** | GPT 5.3 Codex | $1.75/$14 | coder, engineer |
+| **Workhorse** | GPT 5.4 Mini | $0.75/$4.50 | reviewer, qa |
+| **Backup Review** | GPT-5 mini | $0.25/$2 | senior-reviewer |
 | **Frontend** | Kimi K2.5 | $0.60/$3 | frontend |
-| **Budget** | Gemini 3 Flash | ~$0.50/$3 | docs_generator |
-| **Free** | Big Pickle | Free | pickle-think, pickle-implement |
+| **Budget** | MiniMax M2.5 | ~$0.20-$3 | linear |
+| **Free** | MiniMax M2.5 Free, Big Pickle | $0 | docs_generator, pickle-think, pickle-implement |
 
-**Cross-model review rule:** Code written by the default MiniMax M2.5 Free build lane should be reviewed with a different model family, typically Gemini 3.1 Pro. If `@engineer` is also using Gemini 3.1 Pro, avoid same-model self-review.
+**Cross-model review rule:** Code written by the default MiniMax build lane should be reviewed with a different model family when the work matters. Code written by Codex lanes should usually be reviewed with GPT 5.4 Mini. If Gemini 3.1 Pro writes or heavily reshapes the implementation, prefer `@reviewer` or `@senior-reviewer` for the second pass instead of same-model self-review.
+
+## Recommended Routing
+
+- `@pickle-think` -> cheap triage, rough brainstorming, disposable first pass
+- `@planning-agent` -> architecture, system design, and decision-heavy planning
+- `@principal-engineer` -> deep engineering thinking, major tradeoffs, migrations, and technical direction
+- default `build` mode -> cheap routine implementation on MiniMax M2.5
+- `@shipwright` -> named Codex primary when you want the stronger build lane
+- `@coder` / `@engineer` -> specialist execution lanes when you want a narrower workflow
+- `@qa` -> test generation and execution
+- `@reviewer` -> fresh second-pass review
+- `@senior-reviewer` -> GPT-family backup review lane
+- `@security` -> auth, secrets, public API, and user-input risk
 
 ---
 
@@ -64,7 +81,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ### 2. Linear (`linear.md`)
 
-**Model:** GPT 5.4 Mini
+**Model:** MiniMax M2.5
 
 **Purpose:** Create Linear projects and issues with better structured output than the cheaper routing tier, while still staying in the low-cost bucket.
 
@@ -76,9 +93,9 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ### 3. Engineer (`engineer.md`)
 
-**Model:** Gemini 3.1 Pro
+**Model:** GPT 5.3 Codex
 
-**Purpose:** Premium implementation agent for ambiguous, risky, or architecture-sensitive work where stronger reasoning is worth the cost. Requires approval before commit-oriented actions.
+**Purpose:** Execution-first implementation agent. Use this when the job is to take a concrete assignment, run the loop, make the change, verify it, and hand it back cleanly.
 
 **Example Commands:**
 ```bash
@@ -86,7 +103,31 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 @engineer "Build the authentication middleware with proper session handling"
 ```
 
-### 4. Coder (`coder.md`)
+### 4. Shipwright (`shipwright.md`)
+
+**Model:** GPT 5.3 Codex
+
+**Purpose:** Distinct primary Codex build lane for end-to-end execution when you want a named builder without changing the cheaper MiniMax support lanes.
+
+**Example Commands:**
+```bash
+@shipwright "Implement the retry queue and make the tests pass"
+@shipwright "Refactor the auth middleware and verify the regression suite"
+```
+
+### 5. Principal Engineer (`principal-engineer.md`)
+
+**Model:** Gemini 3.1 Pro
+
+**Purpose:** Deep engineering thinking, architecture-heavy tradeoffs, migration strategy, and technical direction when the hard part is choosing the right design, not just executing it.
+
+**Example Commands:**
+```bash
+@principal-engineer "Design the migration from single-tenant to multi-tenant billing"
+@principal-engineer "Figure out the safest architecture for background job retries and idempotency"
+```
+
+### 6. Coder (`coder.md`)
 
 **Model:** GPT 5.3 Codex
 
@@ -98,7 +139,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 @coder "Refactor the date parser - keep all existing tests green"
 ```
 
-### 5. Frontend (`frontend.md`)
+### 7. Frontend (`frontend.md`)
 
 **Model:** Kimi K2.5
 
@@ -110,11 +151,11 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 @frontend "Build a responsive dashboard layout with sidebar navigation"
 ```
 
-### 6. Reviewer (`reviewer.md`)
+### 8. Reviewer (`reviewer.md`)
 
-**Model:** Gemini 3.1 Pro
+**Model:** GPT 5.4 Mini
 
-**Purpose:** Code quality review focused on structure, readability, maintainability, and performance.
+**Purpose:** Code quality review focused on structure, readability, maintainability, and performance. This is the default fresh second-pass reviewer for Codex-built work.
 
 **Example Commands:**
 ```bash
@@ -124,7 +165,19 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 **Reports saved to:** `.opencode/reviewer/`
 
-### 7. Security (`security.md`)
+### 9. Senior Reviewer (`senior-reviewer.md`)
+
+**Model:** GPT-5 mini
+
+**Purpose:** Backup review lane when you want a fresh GPT-family pass instead of the default reviewer.
+
+**Example Commands:**
+```bash
+@senior-reviewer "Review ./src/services/payment.ts"
+@senior-reviewer "Review ./src/auth/ for correctness and maintainability"
+```
+
+### 10. Security (`security.md`)
 
 **Model:** Gemini 3.1 Pro
 
@@ -138,7 +191,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 **Reports saved to:** `.opencode/security/`
 
-### 8. QA (`qa.md`)
+### 11. QA (`qa.md`)
 
 **Model:** GPT 5.4 Mini
 
@@ -151,9 +204,9 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 @qa "Users can only edit their own profile; admins can edit any profile; email changes require reverification"
 ```
 
-### 9. Docs Generator (`docs_generator.md`)
+### 12. Docs Generator (`docs_generator.md`)
 
-**Model:** Gemini 3 Flash
+**Model:** MiniMax M2.5 Free
 
 **Purpose:** Low-cost documentation generation for inline comments, API docs, and external markdown.
 
@@ -163,7 +216,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 @docs_generator "Generate GoDoc for all exported functions in the auth package"
 ```
 
-### 10. Pickle Think (`pickle-think.md`)
+### 13. Pickle Think (`pickle-think.md`)
 
 **Model:** Big Pickle
 
@@ -175,7 +228,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 @pickle-think "Read this module and give me a cheap file-by-file plan"
 ```
 
-### 11. Pickle Implement (`pickle-implement.md`)
+### 14. Pickle Implement (`pickle-implement.md`)
 
 **Model:** Big Pickle
 
@@ -197,10 +250,12 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 1. @pickle-think "Draft a cheap first-pass plan"
 2. @planning-agent "Design [feature]"
 3. @linear "Create issues from [plan file]"
-4. Use default build mode for routine implementation, or `@engineer` when the change is hard or high-risk
-5. @qa "Write and run tests for [files]"
-6. @reviewer "Review [files]"
-7. @security "Audit [scope]"
+4. Use default build mode for the cheap MiniMax path, or `@shipwright` for the stronger Codex path
+5. Escalate to `@principal-engineer` when architecture or risk decisions dominate the task
+6. Use `@coder` or `@engineer` when you want a narrower execution workflow
+7. `@qa` "Write and run tests for [files]"
+8. `@reviewer` or `@senior-reviewer` "Review [files]"
+9. `@security` "Audit [scope]"
 ```
 
 ### Plan Review
@@ -208,7 +263,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 ```bash
 1. @planning-agent "Review ./plan-YYYYMMDD-feature.md"
 2. Address critical findings
-3. Hand off to the default build mode or `@engineer` once approved
+3. Hand off to the default build mode, `@shipwright`, `@coder`, or `@engineer` once approved
 ```
 
 ### Cheap First Pass
@@ -216,7 +271,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 ```bash
 1. @pickle-think "Map the files and suggest the smallest change"
 2. @pickle-implement "Make the low-risk edit"
-3. Escalate to @qa, @coder, or engineer if the task grows
+3. Escalate to `@qa`, `@shipwright`, `@coder`, `@engineer`, or `@principal-engineer` if the task grows
 ```
 
 ### Spec-Driven Implementation
@@ -230,7 +285,7 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 ### Frontend Feature
 
 ```bash
-1. @frontend "Build [component/page] from screenshot or description"
+1. @frontend "Build [component/page] from screenshot or description when the work is screenshot-driven or visually heavy"
 2. @qa "Add component tests"
 3. @reviewer "Review for accessibility and maintainability"
 ```
@@ -239,20 +294,23 @@ A consolidated 11-agent OpenCode setup tuned around Zen pricing and current mode
 
 ## Implementation Agent Comparison
 
-| Criteria | `engineer` | `coder` | `frontend` |
+| Criteria | `engineer` | `principal-engineer` | `coder` |
 |----------|-----------|---------|-----------|
-| **Use when** | Highest-stakes implementation | Spec + tests are clear | UI/component work |
-| **Model** | Gemini 3.1 Pro | GPT 5.3 Codex | Kimi K2.5 |
-| **Cost** | $2/$12 | $1.75/$14 | $0.60/$3 |
-| **Approval** | Requires approval | Autonomous loops | Full access |
-| **Best at** | Hard trade-offs, risky implementation | Test-fix cycles | Responsive UI, a11y |
+| **Use when** | Execute the job | Resolve the hard design call | Spec + tests are clear |
+| **Model** | GPT 5.3 Codex | Gemini 3.1 Pro | GPT 5.3 Codex |
+| **Cost** | $1.75/$14 | $2/$12 | $1.75/$14 |
+| **Approval** | Full execution lane | Higher-cost thinking lane | Autonomous loops |
+| **Best at** | Implement, verify, close the loop | Trade-offs, migrations, architecture | Test-fix cycles |
 
 ---
 
 ## Notes
 
-- The system now uses **11 agents** across **7 models**.
-- The default build mode in `opencode.json` now uses `MiniMax M2.5 Free`; `@engineer` remains the premium escalation path on Gemini 3.1 Pro.
+- The system now uses **14 agents** across **8 models**.
+- The default build mode in `opencode.json` uses `MiniMax M2.5`; `@shipwright` is the distinct primary Codex build lane; `@engineer` remains an execution-oriented Codex specialist; `@principal-engineer` is the Gemini 3.1 Pro deep-thinking lane.
+- `@reviewer` remains the default second-pass reviewer on GPT 5.4 Mini; `@senior-reviewer` is the newer GPT-family backup review lane on GPT-5 mini.
+- `@linear` is the low-cost project-management lane on MiniMax M2.5.
+- `@docs_generator` is the free documentation lane on MiniMax M2.5 Free.
 - `planning-agent` absorbed plan review.
 - `qa` absorbed requirements-driven / BDD test generation.
 - `pickle-think` and `pickle-implement` provide a free first-pass lane on Big Pickle.
