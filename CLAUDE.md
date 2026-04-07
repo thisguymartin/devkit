@@ -79,18 +79,34 @@ AI agent and assistant configs are included but optional -- the core workflow (t
 - **Claude Code** -- Kept for work use; devkit includes Claude rules and settings for both tools
 
 ### OpenCode Agents
-11 specialized agents in `opencode/aig_agents/`, invoked with `@agent-name` syntax inside OpenCode:
+14 specialized agents in `opencode/aig_agents/`, invoked with `@agent-name` syntax inside OpenCode:
 - `@planning-agent` -- architecture, task breakdown, and plan review (Gemini 3.1 Pro)
-- `build` mode in `opencode.json` -- default free implementation lane (MiniMax M2.5 Free)
-- `@engineer` -- premium implementation/orchestration for harder work (Gemini 3.1 Pro)
+- `build` mode in `opencode.json` -- default MiniMax build lane (MiniMax M2.5)
+- `@engineer` -- execution-oriented OpenAI implementation lane (GPT 5.3 Codex)
+- `@shipwright` -- unique primary Codex build lane (GPT 5.3 Codex)
+- `@principal-engineer` -- deep engineering thinking, architecture, and major tradeoffs (Gemini 3.1 Pro)
 - `@coder` -- autonomous test-fix loops when the spec and tests are clear (GPT 5.3 Codex)
-- `@frontend` -- cost-sensitive UI and component work (Kimi K2.5)
-- `@reviewer` / `@security` -- code review and security audit (Gemini 3.1 Pro, cross-model)
+- `@frontend` -- UI specialist and visual-recreation fallback lane (Kimi K2.5)
+- `@reviewer` -- code review and fresh second-pass QA for Codex-built changes (GPT 5.4 Mini, cross-model)
+- `@senior-reviewer` -- GPT-family backup review lane (GPT-5 mini)
+- `@security` -- security audit for higher-risk flows (Gemini 3.1 Pro)
 - `@qa` -- test generation, execution, and BDD flows (GPT 5.4 Mini)
-- `@docs_generator` -- documentation (Gemini 3 Flash)
-- `@linear` -- Linear project management (GPT 5.4 Mini)
+- `@docs_generator` -- documentation (MiniMax M2.5 Free)
+- `@linear` -- Linear project management (MiniMax M2.5)
 - `@pickle-think` -- free triage and rough planning (Big Pickle)
 - `@pickle-implement` -- free low-risk code changes (Big Pickle)
+
+Recommended fallback chain:
+- `@pickle-think` -> cheap triage / rough brainstorming
+- `@planning-agent` -> architecture and decision-heavy planning
+- `@principal-engineer` -> deep engineering thinking and technical direction
+- default `build` -> cheap routine implementation on MiniMax M2.5
+- `@shipwright` -> named Codex primary when you want the stronger build lane
+- `@coder` / `@engineer` -> narrower execution lanes
+- `@qa` -> tests and verification
+- `@reviewer` -> fresh second-pass review
+- `@senior-reviewer` -> GPT-family backup review
+- `@security` -> auth, secrets, public API, and user-input risk
 
 ### Rules & Commands
 Always-on rules in `skills/rules/` are symlinked into `.claude/rules/` -- they apply to every conversation automatically. Personal preferences live in `skills/rules/personal-profile.md`.
@@ -113,6 +129,6 @@ Frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, etc.) are 
 - Shell scripts should use `set -e` and follow existing patterns in `scripts/`
 - `skills/rules/` is the single source of truth for always-on rules -- `.claude/rules/` files are symlinks. Edit files in `skills/rules/`, not `.claude/rules/`
 - `opencode/aig_agents/` is the single source of truth for OpenCode agents -- `~/.config/opencode/agents/` is a symlink
-- Agent model IDs use the `opencode/` prefix for Zen models (e.g., `opencode/minimax-m2.5-free`, `opencode/gemini-3.1-pro`)
+- Agent model IDs use the `opencode/` prefix for Zen models (e.g., `opencode/gpt-5.3-codex`, `opencode/gemini-3.1-pro`)
 - `skills/commands/` and `skills/plane/` are slash commands symlinked into `~/.claude/skills/`
 - `.cursor/rules/` is maintained separately in `.mdc` format -- update when modifying standards in `skills/`

@@ -48,23 +48,26 @@ The repo includes configs for AI coding tools — these are entirely optional an
 | PR review | Copilot | Included | Assign Copilot as reviewer on PRs. |
 | Heavy agentic work | OpenCode + Zen | ~$90/mo | Architecture, multi-file refactors, autonomous coding. |
 
-### OpenCode Agents (11 agents)
+### OpenCode Agents (14 agents)
 
 | Agent | Specialty | Model | Cost | Invoke With |
 | :--- | :--- | :--- | :--- | :--- |
 | **Architect** | System design, task breakdown, plan review | Gemini 3.1 Pro | $2/$12 | `@planning-agent` |
-| **PM** | Linear integration | GPT 5.4 Mini | $0.75/$4.50 | `@linear` |
-| **Engineer** | Premium builder (approval) | Gemini 3.1 Pro | $2/$12 | `@engineer` |
+| **PM** | Linear integration | MiniMax M2.5 | ~$0.20-$3 | `@linear` |
+| **Engineer** | Execution-oriented implementation | GPT 5.3 Codex | $1.75/$14 | `@engineer` |
+| **Shipwright** | Unique primary Codex build lane | GPT 5.3 Codex | $1.75/$14 | `@shipwright` |
+| **Principal Engineer** | Deep engineering thinking, architecture, technical direction | Gemini 3.1 Pro | $2/$12 | `@principal-engineer` |
 | **Coder** | Autonomous test-fix loops | GPT 5.3 Codex | $1.75/$14 | `@coder` |
 | **Frontend** | UI/component development | Kimi K2.5 | $0.60/$3 | `@frontend` |
-| **Reviewer** | Code quality review | Gemini 3.1 Pro | $2/$12 | `@reviewer` |
+| **Reviewer** | Code quality review | GPT 5.4 Mini | $0.75/$4.50 | `@reviewer` |
+| **Senior Reviewer** | GPT-family backup review | GPT-5 mini | $0.25/$2 | `@senior-reviewer` |
 | **Security** | Vulnerability scanning | Gemini 3.1 Pro | $2/$12 | `@security` |
 | **QA** | Test generation, execution, BDD | GPT 5.4 Mini | $0.75/$4.50 | `@qa` |
-| **Docs** | Inline + external docs | Gemini 3 Flash | ~$0.50/$3 | `@docs_generator` |
+| **Docs** | Inline + external docs | MiniMax M2.5 Free | $0 | `@docs_generator` |
 | **Pickle Think** | Free triage & rough planning | Big Pickle | FREE | `@pickle-think` |
 | **Pickle Implement** | Free low-risk code changes | Big Pickle | FREE | `@pickle-implement` |
 
-`planning-agent` now includes plan review mode, `qa` now handles requirements-driven / BDD test generation, and `pickle-think` / `pickle-implement` provide a free first-pass lane on Big Pickle. The default OpenCode build lane in [`opencode.json`](opencode.json) now uses `MiniMax M2.5 Free`; `@engineer` remains the premium escalation path on Gemini 3.1 Pro. Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
+`planning-agent` still owns plan review, the default `build` mode in [`opencode.json`](opencode.json) now uses MiniMax M2.5, `@shipwright` is the distinct primary Codex build lane, `@engineer` is the execution-oriented Codex specialist, and `@principal-engineer` is the Gemini 3.1 Pro lane for deeper engineering judgment. `@reviewer` remains the default second-pass reviewer on GPT 5.4 Mini, while `@senior-reviewer` is the GPT-family backup review lane. The MiniMax lanes stay in place for cheap support work: `@linear` on MiniMax M2.5 and `@docs_generator` on MiniMax M2.5 Free. `pickle-think` / `pickle-implement` still provide the cheap first-pass path on Big Pickle. Agent configs live in [`opencode/aig_agents/`](opencode/aig_agents/). Rules live in [`skills/`](skills/) (symlinked into [`.claude/rules/`](.claude/rules/)) and [`.cursor/rules/`](.cursor/rules/).
 
 For frontend design skills (`/audit`, `/polish`, `/critique`, `/animate`, `/frontend-design`, etc.), install [Impeccable](https://impeccable.style/):
 
