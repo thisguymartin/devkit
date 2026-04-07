@@ -1,7 +1,7 @@
 ---
 description: Senior Reviewer Backup (Fresh GPT-Family Second Pass)
 mode: subagent
-model: opencode/gpt-5.4
+model: openai/gpt-5.4
 temperature: 0.1
 tools:
   bash: true

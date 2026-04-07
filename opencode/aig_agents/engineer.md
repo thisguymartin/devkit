@@ -1,7 +1,7 @@
 ---
 description: Execution Engineer (Owns the Job, Runs the Loop, Lands the Change)
 mode: primary
-model: opencode/gpt-5.3-codex
+model: openai/gpt-5.4-mini
 temperature: 0.2
 tools:
   read: true

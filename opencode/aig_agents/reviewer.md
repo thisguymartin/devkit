@@ -1,7 +1,7 @@
 ---
 description: Senior Code Reviewer (SRP, Complexity, Performance, Readability)
 mode: subagent
-model: opencode/gpt-5.4-mini
+model: openai/gpt-5.4-mini
 temperature: 0.1
 tools:
   bash: true

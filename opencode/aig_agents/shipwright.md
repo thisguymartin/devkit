@@ -1,7 +1,7 @@
 ---
 description: Shipwright (Primary Codex Build Lane for End-to-End Execution)
 mode: primary
-model: opencode/gpt-5.3-codex
+model: openai/gpt-5.3-codex
 temperature: 0.2
 tools:
   read: true
